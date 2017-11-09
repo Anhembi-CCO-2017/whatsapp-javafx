@@ -5,6 +5,15 @@ public class Usuario {
 
     private String nome;
     private String status;
+    private String telefone;
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
     private DateFormat ultimavezonline = DateFormat.getDateTimeInstance();
 
     public Usuario() {

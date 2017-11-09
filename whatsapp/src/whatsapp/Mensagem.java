@@ -4,12 +4,12 @@ import java.util.Calendar;
 
 public class Mensagem {
 
-private String emissor;
+private Usuario emissor;
 private String texto;
 private String status;
 Calendar dataHora = Calendar.getInstance();
 
-    public Mensagem(String emissor, String texto, Calendar dataHora) {
+    public Mensagem(Usuario emissor, String texto, Calendar dataHora) {
         this.emissor = emissor;
         this.texto = texto;
         this.dataHora = dataHora;
@@ -25,7 +25,7 @@ Calendar dataHora = Calendar.getInstance();
     }
 
     public String getEmissor() {
-        return emissor;
+        return emissor.getNome();
     }
 
     public String getTexto() {

@@ -6,6 +6,8 @@ public class Conversa {
     
     private static ArrayList<Mensagem>listaMensagens = new ArrayList<>();
     private String contato;
+    private Usuario user1;
+    private Usuario user2;
     private String onlineUltimaVez;
 
     public Conversa(String contato, String onlineUltimaVez) {
