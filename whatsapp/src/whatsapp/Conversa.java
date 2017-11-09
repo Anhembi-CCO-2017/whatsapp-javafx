@@ -1,75 +1,58 @@
 package whatsapp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Conversa {
     
-    private static ArrayList<Mensagem>listaMensagens = new ArrayList<>();
-    private String contato;
-    private Usuario user1;
-    private Usuario user2;
-    private String onlineUltimaVez;
+    // primeiro usuario SEMPRE definido como "VOCE"
+    private ArrayList<Usuario> user = new ArrayList<>();
+    private ArrayList<Mensagem>listaMensagens = new ArrayList<>();
 
-    public Conversa(String contato, String onlineUltimaVez) {
-        this.contato = contato;
-        this.onlineUltimaVez = onlineUltimaVez;
-    }
+    public Conversa(Usuario user1, Usuario user2) {
+        user.add(user1);
+        user.add(user2);
+    } 
 
-    public Conversa() {
-    }
-    
-
-    public static ArrayList<Mensagem> getListaMensagens() {
+    public ArrayList<Mensagem> getListaMensagens() {
         return listaMensagens;
     }
-
-    public static void setListaMensagens(ArrayList<Mensagem> listaMensagens) {
-        Conversa.listaMensagens = listaMensagens;
-    }
-
-    public String getContato() {
-        return contato;
-    }
-
-    public void setContato(String contato) {
-        this.contato = contato;
-    }
-
-    public String getOnlineUltimaVez() {
-        return onlineUltimaVez;
-    }
-
-    public void setOnlineUltimaVez(String onlineUltimaVez) {
-        this.onlineUltimaVez = onlineUltimaVez;
+    
+    public void addMensagem(int userIndex, String mensagem){
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        
+        Mensagem msg = new Mensagem(user.get(userIndex), mensagem, calendar);
+        listaMensagens.add(msg);
     }
     
-    
-    public void addMensagem(ArrayList<Mensagem>listaMensagens, String autor, Mensagem mensagem){
-    
-        listaMensagens.add(mensagem);
-    }
-    
-    public String buscarMensagem(ArrayList<Mensagem>listaMensagens, String palavra){
-    
-        String saida = "";
+    public ArrayList<Mensagem> buscarMensagem(String busca){
+        ArrayList<Mensagem>returnData = new ArrayList<>();
+        
+        String[] buscaData = busca.split(" ");
+        
         for (Mensagem msg : listaMensagens) {
-            String [] tokens = msg.getTexto().split(" ");
-            if (tokens.equals(msg)) 
-                saida = saida +msg.getTexto()+"\n";
+            String[] msgData = msg.getTexto().split(" ");
             
+            if(searchWords(msgData, buscaData))
+                returnData.add(msg);
         }
         
-        return saida;
+        return returnData;
     }
-    public String retornarMensagens(){
     
-        String saida = "";
+    private static boolean searchWords(String[] msgData, String[] buscaData) {
+        for (String word : buscaData)
+            for (String data : msgData)
+                if (data.equals(word))
+                    return true;
         
-        for (Mensagem msg : listaMensagens) {
-        
-            saida = saida + msg.getTexto()+"\n";
-        }
-        
-        return saida;
+        return false;
+    }
+
+    public Mensagem retornarMensagem(int index){
+        return listaMensagens.get(index);
     }
 }
