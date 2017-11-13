@@ -1,0 +1,51 @@
+.stage{
+	-fx-border-width: 0;
+	-fx-background-image: url("./img/back2.jpg")
+}
+.top{
+	-fx-border-width: 0;
+	-fx-min-width:800;
+	-fx-background-color: #019386;
+}
+
+.user{
+	-fx-border-width: 0;
+	-fx-background-color: #f1f1f1;
+}
+
+.conversas {
+	-fx-fill: #fff;
+	-fx-background-color:#fff;
+}
+
+/**/
+.chats{
+	-fx-background: #ffffff;
+	-fx-background-color:#ffffff;
+}
+
+/*Mensagens*/
+.messages__container{
+	-fx-background: #e6dedb;
+	-fx-background-color:#e6dedb;
+}
+
+.messages__top{
+-fx-background-color: #eeeeee;
+}
+
+
+/* Container para escrever e enviar mensagens*/
+.write__container{
+	-fx-background-color: #e8e7e5;
+}
+
+.write__send{
+	-fx-background-color: transparent;
+	-fx-background-size: 50;
+	-fx-background-image: url(./img/send-msg-2.PNG);
+}
+
+.write__text{
+	-fx-background-color: #f0f0f0
+}
