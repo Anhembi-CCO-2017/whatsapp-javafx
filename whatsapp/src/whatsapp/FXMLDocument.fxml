@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -8,7 +11,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="stage" stylesheets="@../assets/main.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="stage" stylesheets="@../assets/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whatsapp.FXMLDocumentController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="0.0" prefWidth="103.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="978.0" minWidth="10.0" prefWidth="817.0" />
@@ -56,10 +59,16 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </TextArea>
-                        <Button prefHeight="61.0" prefWidth="120.0" style="-fx-background-size: cover;" styleClass="write__send" wrapText="true" GridPane.columnIndex="2">
+                        <Button fx:id="send" onAction="#handleButtonAction" prefHeight="61.0" prefWidth="120.0" style="-fx-background-size: cover;" styleClass="write__send" wrapText="true" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </GridPane.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                      </children>
                   </GridPane>
@@ -98,6 +107,10 @@
                         </Label>
                      </children>
                   </GridPane>
+                  <Pane fx:id="tt" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Rectangle fx:id="tt" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="100.0" layoutX="-7.0" layoutY="-20.0" stroke="BLACK" strokeType="INSIDE" width="96.0" />
+                     </children></Pane>
                </children>
             </GridPane>
          </children>

@@ -10,7 +10,11 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -19,17 +23,26 @@ import javafx.scene.control.Label;
 public class FXMLDocumentController implements Initializable {
     
     @FXML
-    private Label label;
+    private Button send;
+    
+    @FXML
+    private Rectangle tt;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
+    } 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        send.setOnAction(this::handleButtonAction);
+        Image img = new Image("foto.jpg");
+        tt.setFill(new ImagePattern(img));
+
+//        ImagePattern imgptr = new ImagePattern(img);
+//        tt.setFill(imgptr);
+//        String image = FXMLDocumentController.class.getResource("imgs/foto.jpg").toExternalForm();
+//        tt.setStyle("-fx-background-image: url('" + image + "');");
     }    
     
 }

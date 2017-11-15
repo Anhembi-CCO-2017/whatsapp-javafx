@@ -1,6 +1,6 @@
 .stage{
 	-fx-border-width: 0;
-	-fx-background-image: url("./img/back2.jpg")
+	-fx-background-image: url("./imgs/back2.jpg")
 }
 .top{
 	-fx-border-width: 0;
@@ -30,17 +30,6 @@
 	-fx-background-color:#e6dedb;
 }
 
-.messages__image{
-	-fx-border-radius:100;
-	-fx-background-size: 50;
-	-fx-max-width:50;
-	-fx-max-height:50;
-	-fx-background-radius:50;
-	-fx-border-radius:50;
-	-fx-border-color:#eeeeee;
-	-fx-fill: url('./img/foto.jpg');
-}
-
 .messages__top{
 -fx-background-color: #eeeeee;
 }
@@ -60,7 +49,7 @@
 .write__send{
 	-fx-background-color: transparent;
 	-fx-background-size: 50;
-	-fx-background-image: url(./img/send-msg-2.png);
+	-fx-background-image: url(./imgs/send-msg-2.png);
 }
 
 .write__text{
