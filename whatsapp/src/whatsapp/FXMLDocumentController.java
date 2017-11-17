@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -64,14 +65,26 @@ public class FXMLDocumentController implements Initializable {
         textArea.setContent(dataText);
     }
     
+    //ESSA FUNCAO SO VAI EXISTIR POR ENQUANTO
+    //DEPOIS QUE EXISTIR A OPCAO DE INICIAR CONVERSA ELA VAI PRO BELELEU
     private void genConversas() {
         Usuario me = new Usuario("Eu", "stackoverflow");
-                
+        Random r = new Random();
+        
         for (int i = 0; i < 10; i++) {
             Usuario user = new Usuario("Carlos"+i, "cade 2 segunda chance");
             Conversa conv = new Conversa(me, user);
-            conv.addMensagem(0, "teste meu");
-            conv.addMensagem(1, "teste do carlos..fulano"+i);
+            
+            boolean swtch = false;
+                    
+            for(int j = 0; i < r.nextInt(50); j++) {
+                if(swtch)
+                    conv.addMensagem(0, UUID.randomUUID().toString());
+                else
+                    conv.addMensagem(1, UUID.randomUUID().toString());
+                
+                swtch = !swtch;
+            }
             
             conversas.add(conv);
             //contatos.adicionarUsuario(user); 
