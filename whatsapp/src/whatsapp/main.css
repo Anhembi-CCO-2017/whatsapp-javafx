@@ -55,3 +55,7 @@
 .write__text{
 	-fx-background-color: #f0f0f0
 }
+
+.mensagem{
+    -fx-background-color: #f0f0ff;
+}

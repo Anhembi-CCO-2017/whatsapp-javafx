@@ -42,7 +42,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleButtonAction(ActionEvent event) {
         Random r = new Random();
         GridPane gpp = new GridPane();
-        gpp.setStyle("-fx-border-width: 0 0 1 0 solid; -fx-border-color: #ccc; -fx-background-color:rgb("+ r.nextInt(255)+"," + r.nextInt(255) + "," + r.nextInt(255)+"); -fx-min-height: 50; ");
+        gpp.getStyleClass().add("mensagem-left");
         msgContent.getChildren().add(gpp);
     }
     
@@ -57,7 +57,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         send.setOnAction(this::handleButtonAction);
-       
+        msgContent.getStyleClass().add("mensagem-container");
         msgScroll.setContent(msgContent);
        
             

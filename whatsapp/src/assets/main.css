@@ -66,3 +66,34 @@
 .write__text{
 	-fx-background-color: #f0f0f0
 }
+
+.mensagem-left{
+    -fx-background: transparent;
+    -fx-background-color: 
+        transparent, 
+        transparent, 
+        transparent, 
+        #dcf8c5;
+    -fx-background-insets: 0 0 -10 0, 0, 1, 2;
+    -fx-min-height: 50;
+    -fx-background-radius: 30px, 30px, 200px, 3px;
+    -fx-max-width: 300;
+}
+
+.mensagem-right{
+    -fx-background: transparent;
+    -fx-background-color: 
+        transparent, 
+        transparent, 
+        transparent, 
+        #ffffff;
+    -fx-background-insets: 0 0 -10 0, 0, 1, 2;
+    -fx-min-height: 50;
+    -fx-background-radius: 30px, 30px, 200px, 3px;
+    -fx-max-width: 300;
+}
+
+.mensagem-container{
+    
+    -fx-padding: 10;
+}
