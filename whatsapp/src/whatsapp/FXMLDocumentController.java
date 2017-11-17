@@ -26,9 +26,6 @@ public class FXMLDocumentController implements Initializable {
     private Button send;
     
     @FXML
-    private Rectangle tt;
-    
-    @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
     } 
@@ -36,9 +33,6 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         send.setOnAction(this::handleButtonAction);
-        Image img = new Image("foto.jpg");
-        tt.setFill(new ImagePattern(img));
-
 //        ImagePattern imgptr = new ImagePattern(img);
 //        tt.setFill(imgptr);
 //        String image = FXMLDocumentController.class.getResource("imgs/foto.jpg").toExternalForm();
