@@ -24,7 +24,11 @@ public class Mensagem {
       this.status=status[i];
     }
 
-    public String getEmissor() {
+    public Usuario getEmissor() {
+        return emissor;
+    }
+
+    public String getEmissorName() {
         return emissor.getNome();
     }
 
