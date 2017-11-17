@@ -14,7 +14,11 @@ public class Conversa {
     public Conversa(Usuario user1, Usuario user2) {
         user.add(user1);
         user.add(user2);
-    } 
+    }
+    
+    public Usuario getUser(int index) {
+        return user.get(index);
+    }
 
     public ArrayList<Mensagem> getListaMensagens() {
         return listaMensagens;

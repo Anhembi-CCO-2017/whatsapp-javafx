@@ -72,7 +72,7 @@
                         </Button>
                      </children>
                   </GridPane>
-                  <ScrollPane prefHeight="163.0" prefWidth="711.0" styleClass="messages__container" />
+                  <ScrollPane fx:id="textArea" prefHeight="163.0" prefWidth="711.0" styleClass="messages__container" />
                </children>
             </GridPane>
             <GridPane styleClass="messages__top" GridPane.columnIndex="1">
