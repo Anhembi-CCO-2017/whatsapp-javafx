@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,21 +30,37 @@ public class FXMLDocumentController implements Initializable {
     private Button send;
     @FXML
     private ScrollPane contactScroll;
+    @FXML
+    private ScrollPane msgScroll;
     
     @FXML
+    private VBox content;
+    @FXML
+    private VBox msgContent;
+
+    @FXML
     private void handleButtonAction(ActionEvent event) {
+        Random r = new Random();
+        GridPane gpp = new GridPane();
+        gpp.setStyle("-fx-border-width: 0 0 1 0 solid; -fx-border-color: #ccc; -fx-background-color:rgb("+ r.nextInt(255)+"," + r.nextInt(255) + "," + r.nextInt(255)+"); -fx-min-height: 50; ");
+        msgContent.getChildren().add(gpp);
+    }
+    
+    @FXML
+    private void addMsg(ActionEvent event) {
         System.out.println("You clicked me!");
-    } 
+        Random r = new Random();
+        content.getChildren().add(new Rectangle(130, 50, Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255))));
+    }
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         send.setOnAction(this::handleButtonAction);
        
-        VBox content = new VBox();
-        contactScroll.setContent(content);
-        Random r = new Random();
-        for (int i = 0; i < 10; i++)
-            content.getChildren().add(new Rectangle(130, 50, Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255))));
+        msgScroll.setContent(msgContent);
+       
+            
 //        ImagePattern imgptr = new ImagePattern(img);
 //        tt.setFill(imgptr);
 //        String image = FXMLDocumentController.class.getResource("imgs/foto.jpg").toExternalForm();
