@@ -40,6 +40,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
@@ -76,27 +77,27 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handlerButtonAddConv(ActionEvent event) {
         
-        VBox content = new VBox();
-        GridPane grid = new GridPane();
+        VBox content = this.content;
+        //GridPane grid = new GridPane();
 
         GridPane upSide = new GridPane();
-        upSide.add(new Text(""), 0, 0);
-        upSide.add(new Text(""), 1, 0);
+        upSide.add(new Text("\t"), 0, 0);
+        upSide.add(new Text("New Chat\t\t"), 1, 0);
         Button btCancel = new Button("Cancelar");
+        btCancel.setStyle("user");
         upSide.add(btCancel, 2, 0);
 
-        GridPane gridNewContact = new GridPane();
-        gridNewContact.add(new Circle(18), 0, 0);
-        gridNewContact.add(new Text("Novo Contato"), 1, 0);
+        HBox gridNewContact = new HBox();
+        gridNewContact.getChildren().add(new Circle(18));
+        gridNewContact.getChildren().add(new Text("Novo Contato"));
         
-        GridPane downSide = new GridPane();
-        TextField searchBox = new TextField("Search");
-        downSide.add(searchBox, 0, 0);
-        downSide.add(gridNewContact, 0, 1);
-        ScrollPane scrollContact = new ScrollPane();
-        
+        HBox downSide = new HBox();
+        TextField searchBox = new TextField("Search\t\t\t\t");
+        downSide.getChildren().add(searchBox);
+
         VBox scrollContactContent = new VBox();
         ArrayList<Usuario> data = contatos.getArrayListUsers();
+        scrollContactContent.getChildren().add(gridNewContact);
         for (int i = 0; i < data.size(); i++)
         {
             Usuario usr = data.get(i);
@@ -132,15 +133,11 @@ public class FXMLDocumentController implements Initializable {
             
             scrollContactContent.getChildren().add(layout);
         }
-        
-        scrollContact.setContent(scrollContactContent);
-        downSide.add(scrollContact, 0, 1);
-        
-        grid.add(upSide, 0, 0);
-        grid.add(downSide, 0, 1);
 
         content.getChildren().clear();
-        content.getChildren().add(grid);
+        content.getChildren().add(upSide);
+        content.getChildren().add(downSide);
+        content.getChildren().add(scrollContactContent);
 
         contactScroll.setContent(content);
     }
