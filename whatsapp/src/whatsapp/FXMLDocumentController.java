@@ -5,22 +5,31 @@
  */
 package whatsapp;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -30,7 +39,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
+import javafx.stage.Stage;
 
 /**
  *
@@ -54,10 +66,85 @@ public class FXMLDocumentController implements Initializable {
     private Circle topoImage;
     @FXML
     private Label topoNome;
+    @FXML
+    private Button buttonAddConv;
     
-    private Contatos contatos;
+    private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
     private Conversa activeConv;
+    
+    @FXML
+    private void handlerButtonAddConv(ActionEvent event) {
+        
+        VBox content = new VBox();
+        GridPane grid = new GridPane();
+
+        GridPane upSide = new GridPane();
+        upSide.add(new Text(""), 0, 0);
+        upSide.add(new Text(""), 1, 0);
+        Button btCancel = new Button("Cancelar");
+        upSide.add(btCancel, 2, 0);
+
+        GridPane gridNewContact = new GridPane();
+        gridNewContact.add(new Circle(18), 0, 0);
+        gridNewContact.add(new Text("Novo Contato"), 1, 0);
+        
+        GridPane downSide = new GridPane();
+        TextField searchBox = new TextField("Search");
+        downSide.add(searchBox, 0, 0);
+        downSide.add(gridNewContact, 0, 1);
+        ScrollPane scrollContact = new ScrollPane();
+        
+        VBox scrollContactContent = new VBox();
+        ArrayList<Usuario> data = contatos.getArrayListUsers();
+        for (int i = 0; i < data.size(); i++)
+        {
+            Usuario usr = data.get(i);
+            
+            GridPane gppConv = new GridPane();
+            gppConv.getStyleClass().add("conversa");
+            
+            GridPane gppConvText = new GridPane();
+            gppConvText.getStyleClass().add("conversa-texts");
+            
+            /* Nome do usuário dentro de um Text */
+            Text textConvName = new Text(usr.getNome());
+            textConvName.getStyleClass().add("conversa-name");
+            
+            /* Ultima mensagem da conversa dentro de um Text */
+            Text textConvLast = new Text("ultima msg");
+            textConvLast.getStyleClass().add("conversa-last");
+            
+            /* Pegando a imagem e colocando dentro de um circulo*/
+            Circle foto = new Circle(40, 40, 20, Color.BLUE);
+            foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
+
+            gppConvText.add(textConvName, 1, 0);
+            gppConvText.add(textConvLast, 1, 1);
+            
+            gppConv.add(gppConvText, 1, 0);
+            gppConv.add(foto, 0, 0);
+
+            StackPane layout = new StackPane();
+            layout.getChildren().addAll(gppConv);
+            layout.setUserData(conversas.get(i));
+            //layout.onMouseClickedProperty().set(this::handleClickContact);
+            
+            scrollContactContent.getChildren().add(layout);
+        }
+        
+        scrollContact.setContent(scrollContactContent);
+        downSide.add(scrollContact, 0, 1);
+        
+        grid.add(upSide, 0, 0);
+        grid.add(downSide, 0, 1);
+
+        content.getChildren().clear();
+        content.getChildren().add(grid);
+
+        contactScroll.setContent(content);
+    }
+
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -134,6 +221,7 @@ public class FXMLDocumentController implements Initializable {
             Usuario user = new Usuario("Carlos"+i, "cade 2 segunda chance");
             Conversa conv = new Conversa(me, user);
             user.setImage("foto"+i+".jpg");
+            this.contatos.adicionarUsuario(user);
             boolean swtch = false;
                     
             for(int j = 0; i < r.nextInt(50); j++) {
@@ -146,7 +234,6 @@ public class FXMLDocumentController implements Initializable {
             }
             
             conversas.add(conv);
-            //contatos.adicionarUsuario(user); 
         }
     }
     
@@ -174,7 +261,14 @@ public class FXMLDocumentController implements Initializable {
             textConvName.getStyleClass().add("conversa-name");
             
             /* Ultima mensagem da conversa dentro de um Text */
-            Text textConvLast = new Text("ultima msg");
+            String textDataConvLast;
+                    
+            if(conversas.get(i).getListaMensagens().size() > 0)
+                textDataConvLast = conversas.get(i).retornarMensagemString(conversas.get(i).getListaMensagens().size() - 1);
+            else
+                textDataConvLast = "";
+            
+            Text textConvLast = new Text(""+textDataConvLast);
             textConvLast.getStyleClass().add("conversa-last");
             
             
@@ -204,6 +298,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         send.setOnAction(this::handleButtonAction);
+        buttonAddConv.setOnAction(this::handlerButtonAddConv);
         this.loadConversas();
 
     }

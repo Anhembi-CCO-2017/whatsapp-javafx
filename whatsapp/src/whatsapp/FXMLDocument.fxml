@@ -35,7 +35,7 @@
          <children>
             <Pane prefHeight="59.0" prefWidth="175.0" styleClass="user">
                <children>
-                  <Button layoutX="89.0" layoutY="16.0" mnemonicParsing="false" text="add conversa" />
+                  <Button fx:id="buttonAddConv" layoutX="89.0" layoutY="16.0" mnemonicParsing="false" text="add conversa" />
                </children></Pane>
             <ScrollPane fx:id="contactScroll" hbarPolicy="NEVER" prefHeight="305.0" prefWidth="103.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <content>

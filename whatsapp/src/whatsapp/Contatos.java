@@ -21,6 +21,11 @@ public class Contatos implements Serializable {
         listaUsuarios.add(usuario);
         
     }
+    
+    public ArrayList<Usuario> getArrayListUsers() {
+        return this.listaUsuarios;
+    }
+    
     public String listarUsuario(){
     
         String saida = "";

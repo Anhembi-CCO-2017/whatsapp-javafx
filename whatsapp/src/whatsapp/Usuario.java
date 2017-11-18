@@ -18,7 +18,8 @@ public class Usuario {
     }
     private DateFormat ultimavezonline = DateFormat.getDateTimeInstance();
 
-    public Usuario() {
+    public Usuario(String telefone) {
+        this.telefone = telefone;
     }
 
     public Usuario(String nome, String status) {

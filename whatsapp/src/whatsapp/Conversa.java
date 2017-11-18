@@ -59,4 +59,8 @@ public class Conversa {
     public Mensagem retornarMensagem(int index){
         return listaMensagens.get(index);
     }
+    
+    public String retornarMensagemString(int index){
+        return listaMensagens.get(index).getTexto();
+    }
 }
