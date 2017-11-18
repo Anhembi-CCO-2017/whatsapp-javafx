@@ -43,6 +43,9 @@ public class Mensagem {
     public Calendar getDataHora() {
         return dataHora;
     }
-
+    
+    public String getHora() {
+        return dataHora.get(Calendar.HOUR) + ":" + dataHora.get(Calendar.MINUTE);
+    }
 
 }

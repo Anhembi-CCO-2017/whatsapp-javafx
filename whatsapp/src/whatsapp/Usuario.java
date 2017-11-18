@@ -1,11 +1,13 @@
 package whatsapp;
 import java.text.DateFormat;
+import javafx.scene.image.Image;
 
 public class Usuario {
 
     private String nome;
     private String status;
     private String telefone;
+    private Image image;
 
     public String getTelefone() {
         return telefone;
@@ -27,7 +29,15 @@ public class Usuario {
     public String getNome() {
         return nome;
     }
-
+    
+    public void setImage(String image) {
+        this.image = new Image(getClass().getResourceAsStream(image));
+    }
+    
+    public Image getImage() {
+        return image;
+    }
+    
     public void setNome(String nome) {
         this.nome = nome;
     }

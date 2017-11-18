@@ -66,3 +66,53 @@
 .write__text{
 	-fx-background-color: #f0f0f0
 }
+
+/* Conversas */
+.conversa{
+	-fx-border-width: 0 0 0.5 0;
+	-fx-border-color: #e5e5e5;
+	-fx-min-height: 60;
+	-fx-padding: 10;
+}
+.conversa-texts{
+	-fx-padding: 0 0 0 10;
+}
+.conversa-name{
+	-fx-font-weight: bold;
+}
+
+/* Mensagem */
+.mensagem{
+    -fx-background-insets: 0 0 -10 0, 0, 1, 2;
+    -fx-min-height: 50;
+    -fx-background-radius: 30px, 30px, 200px, 3px;
+    -fx-max-width: 300;
+    -fx-padding: 10;
+    -fx-background: transparent;
+}
+
+.mensagem-hora{
+	-fx-fill: #bdbdbd;
+	-fx-alignment: right;
+}
+
+.mensagem-left{
+    -fx-background-color: 
+        transparent, 
+        transparent, 
+        transparent, 
+        #dcf8c5;
+
+}
+
+.mensagem-right{
+    -fx-background-color: 
+        transparent, 
+        transparent, 
+        transparent, 
+        #ffffff;
+}
+
+.mensagem-container{
+    -fx-padding: 10;
+}
