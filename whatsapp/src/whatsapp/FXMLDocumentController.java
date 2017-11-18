@@ -7,8 +7,10 @@ package whatsapp;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.UUID;
@@ -30,6 +32,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -68,71 +71,85 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label topoNome;
     @FXML
+    private Button userSwitch;
+    @FXML
     private Button buttonAddConv;
+    @FXML
+    private Label labelStatus;
     
     private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
     private Conversa activeConv;
+    private boolean switchState = false;
+    
+    @FXML
+    private StackPane genScrollList(Usuario usr) {
+        GridPane gppConv = new GridPane();
+        gppConv.getStyleClass().add("conversa");
+
+        GridPane gppConvText = new GridPane();
+        gppConvText.getStyleClass().add("conversa-texts");
+
+        /* Nome do usuário dentro de um Text */
+        Text textConvName = new Text(usr.getNome());
+        textConvName.getStyleClass().add("conversa-name");
+
+        /* Status do contato dentro de um Text */
+        Text textConvLast = new Text(usr.getStatus());
+        textConvLast.getStyleClass().add("conversa-last");
+
+        /* Pegando a imagem e colocando dentro de um circulo*/
+        Circle foto = new Circle(40, 40, 20, Color.rgb(18,140,126));
+        foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
+
+        gppConvText.add(textConvName, 1, 0);
+        gppConvText.add(textConvLast, 1, 1);
+
+        gppConv.add(gppConvText, 1, 0);
+        gppConv.add(foto, 0, 0);
+
+        StackPane layout = new StackPane();
+        layout.getChildren().addAll(gppConv);
+        //layout.setUserData(conversas.get(i));
+        //layout.onMouseClickedProperty().set(this::handleClickContact);
+
+        return layout;
+    }
+    
+    @FXML
+    private void handlerUserSwitch(ActionEvent event) {
+        this.switchState = !this.switchState;
+    }
     
     @FXML
     private void handlerButtonAddConv(ActionEvent event) {
         
         VBox content = this.content;
-        //GridPane grid = new GridPane();
 
         GridPane upSide = new GridPane();
         upSide.add(new Text("\t"), 0, 0);
-        upSide.add(new Text("New Chat\t\t"), 1, 0);
+        upSide.add(new Text("New Chat\t     "), 1, 0);
         Button btCancel = new Button("Cancelar");
         btCancel.setStyle("user");
         upSide.add(btCancel, 2, 0);
-
-        HBox gridNewContact = new HBox();
-        gridNewContact.getChildren().add(new Circle(18));
-        gridNewContact.getChildren().add(new Text("Novo Contato"));
         
         HBox downSide = new HBox();
         TextField searchBox = new TextField("Search\t\t\t\t");
+        downSide.getChildren().add(new Button("..."));
         downSide.getChildren().add(searchBox);
 
         VBox scrollContactContent = new VBox();
         ArrayList<Usuario> data = contatos.getArrayListUsers();
-        scrollContactContent.getChildren().add(gridNewContact);
+        
+        //Gambiarra para criar o novo contato.
+        Usuario newContact = new Usuario("", "Novo contato");
+        newContact.setImage("contact.jpg");
+        
+        scrollContactContent.getChildren().add(this.genScrollList(newContact));
+        
+        // Monta lista de usuarios
         for (int i = 0; i < data.size(); i++)
-        {
-            Usuario usr = data.get(i);
-            
-            GridPane gppConv = new GridPane();
-            gppConv.getStyleClass().add("conversa");
-            
-            GridPane gppConvText = new GridPane();
-            gppConvText.getStyleClass().add("conversa-texts");
-            
-            /* Nome do usuário dentro de um Text */
-            Text textConvName = new Text(usr.getNome());
-            textConvName.getStyleClass().add("conversa-name");
-            
-            /* Ultima mensagem da conversa dentro de um Text */
-            Text textConvLast = new Text("ultima msg");
-            textConvLast.getStyleClass().add("conversa-last");
-            
-            /* Pegando a imagem e colocando dentro de um circulo*/
-            Circle foto = new Circle(40, 40, 20, Color.BLUE);
-            foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
-
-            gppConvText.add(textConvName, 1, 0);
-            gppConvText.add(textConvLast, 1, 1);
-            
-            gppConv.add(gppConvText, 1, 0);
-            gppConv.add(foto, 0, 0);
-
-            StackPane layout = new StackPane();
-            layout.getChildren().addAll(gppConv);
-            layout.setUserData(conversas.get(i));
-            //layout.onMouseClickedProperty().set(this::handleClickContact);
-            
-            scrollContactContent.getChildren().add(layout);
-        }
+            scrollContactContent.getChildren().add(this.genScrollList(data.get(i)));
 
         content.getChildren().clear();
         content.getChildren().add(upSide);
@@ -148,9 +165,15 @@ public class FXMLDocumentController implements Initializable {
         if(msgTextArea.getText().equals(""))
             return;
         
-        activeConv.addMensagem(0, msgTextArea.getText());
+        int userID = (switchState) ? 1 : 0;
+        activeConv.addMensagem(userID, msgTextArea.getText());
         ArrayList<Mensagem> msgs = activeConv.getListaMensagens();
-
+        
+        if(switchState) {
+            activeConv.getUser(1).setUltimavezonline(DateFormat.getDateTimeInstance());
+            //labelStatus.setText(value);
+        }
+        
         GridPane gppText = new GridPane();
         Mensagem msg = msgs.get(msgs.size()-1);
         
@@ -169,7 +192,8 @@ public class FXMLDocumentController implements Initializable {
         }else{
             gppText.setHalignment(textStatus, HPos.CENTER);
             gppText.getStyleClass().add("mensagem-right");
-                }
+        }
+        
         msgContent.getChildren().add(gppText);
         msgTextArea.clear();
     }
@@ -185,6 +209,8 @@ public class FXMLDocumentController implements Initializable {
         dataText.setUserData(activeConv);
         topoNome.setText(activeConv.getUser(1).getNome());
         topoImage.setFill(new ImagePattern(activeConv.getUser(1).getImage(), 0, 0, 1, 1, true));
+        
+        GridPane generalGrid = new GridPane();
         for (int i = 0; i < msgs.size(); i++)
         {
             GridPane gppText = new GridPane();
@@ -199,11 +225,17 @@ public class FXMLDocumentController implements Initializable {
             gppText.getStyleClass().add("mensagem");
             if(msg.getEmissor().equals(activeConv.getUser(0))){
                 gppText.getStyleClass().add("mensagem-left");
+                generalGrid.add(gppText, 0, 0);
             }else{
                 gppText.getStyleClass().add("mensagem-right");
+                generalGrid.add(gppText, 0, 1);
             }
-            dataText.getChildren().add(gppText);
+            
+            
+            dataText.getChildren().add(generalGrid);
         }
+        
+        //dataText.getChildren().add(gppText);
         
         msgScroll.setContent(dataText);
     }
@@ -294,10 +326,11 @@ public class FXMLDocumentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        userSwitch.setOnAction(this::handlerUserSwitch);
         send.setOnAction(this::handleButtonAction);
         buttonAddConv.setOnAction(this::handlerButtonAddConv);
-        this.loadConversas();
 
+        this.loadConversas();
     }
    
 }

@@ -54,6 +54,10 @@ public class Usuario {
     public DateFormat getUltimavezonline() {
         return ultimavezonline;
     }
+    
+    public DateFormat getFormatedLastOnline() {
+        return ultimavezonline;
+    }
 
     public void setUltimavezonline(DateFormat ultimavezonline) {
         this.ultimavezonline = ultimavezonline;

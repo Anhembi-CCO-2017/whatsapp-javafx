@@ -43,7 +43,7 @@
                      <children>
                         <HBox prefHeight="37.0" prefWidth="201.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="..." />
                               <TextField prefHeight="27.0" prefWidth="210.0" text="PESQUISA" />
                            </children>
                         </HBox>
@@ -87,7 +87,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <ToggleButton mnemonicParsing="false" text="usuario" />
+                        <Button fx:id="userSwitch" mnemonicParsing="false" text="Usuario" />
                      </children>
                   </GridPane>
                   <ScrollPane fx:id="msgScroll" hbarPolicy="NEVER" prefHeight="163.0" prefWidth="711.0" styleClass="messages__container" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM">
@@ -116,7 +116,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="imagina uma descrição muito legal aqui" textFill="#a7a7a7" GridPane.rowIndex="1">
+                        <Label fx:id="labelStatus" text="imagina uma descrição muito legal aqui" textFill="#a7a7a7" GridPane.rowIndex="1">
                            <font>
                               <Font size="14.0" />
                            </font>
