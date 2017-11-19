@@ -1,5 +1,6 @@
 package whatsapp;
-import java.time.Instant;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Usuario {
@@ -7,7 +8,8 @@ public class Usuario {
     private String nome;
     private String status;
     private String telefone;
-
+    private Date ultimavezonline = new Date();
+    
     public String getTelefone() {
         return telefone;
     }
@@ -15,8 +17,7 @@ public class Usuario {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    private Date ultimavezonline = Date.from(Instant.MIN);
-
+    
     public Usuario() {
     }
 
@@ -41,12 +42,15 @@ public class Usuario {
         this.status = status;
     }
 
-    public DateFormat getUltimavezonline() {
-        return ultimavezonline;
+    public void setUltimavezonline(Date ultimavezonline) {
+        
+        this.ultimavezonline = ultimavezonline;
     }
 
-    public void setUltimavezonline(DateFormat ultimavezonline) {
-        this.ultimavezonline = ultimavezonline;
+    public String getUltimavezonline() {
+        
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        return dateFormat.format(ultimavezonline);
     }
     
     @Override
