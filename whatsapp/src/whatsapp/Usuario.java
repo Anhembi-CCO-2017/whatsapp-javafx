@@ -53,6 +53,11 @@ public class Usuario {
         return dateFormat.format(ultimavezonline);
     }
     
+    public Date GetDateObject(){
+    
+        return this.ultimavezonline;
+    }
+    
     @Override
     public String toString(){
     
