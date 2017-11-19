@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.UUID;
@@ -122,7 +123,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
-    private void handlerButtonAddConv(ActionEvent event) {
+    private void handlerButtonOpenContacts(ActionEvent event) {
         
         VBox content = this.content;
 
@@ -160,9 +161,9 @@ public class FXMLDocumentController implements Initializable {
     }
 
     
-    /*Acão do botão para ... */
+    /*Acão do botão para Enviar msg */
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void handleButtonSendMsg(ActionEvent event) {
         if(msgTextArea.getText().equals(""))
             return;
         
@@ -170,9 +171,10 @@ public class FXMLDocumentController implements Initializable {
         activeConv.addMensagem(userID, msgTextArea.getText());
         ArrayList<Mensagem> msgs = activeConv.getListaMensagens();
         
+        //Caso Contato envie msg, atualiza o UltimaVezOnline
         if(switchState) {
             activeConv.getUser(1).setUltimavezonline(DateFormat.getDateTimeInstance());
-            //labelStatus.setText(value);
+            //labelStatus.setText(activeConv.getUser(1).getUltimavezonline().getCalendar().getDisplayName(35, Calendar.SHORT_FORMAT, Locale.ENGLISH));
         }
         
         GridPane gppText = new GridPane();
@@ -198,7 +200,6 @@ public class FXMLDocumentController implements Initializable {
         msgContent.getChildren().add(gppText);
         msgTextArea.clear();
     }
-    
     
     /*  Acão do botão quando o contato é clicado.
             Insere todas as mensagens da conversa no container de mensagens
@@ -338,8 +339,8 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         userSwitch.setOnAction(this::handlerUserSwitch);
-        send.setOnAction(this::handleButtonAction);
-        buttonAddConv.setOnAction(this::handlerButtonAddConv);
+        send.setOnAction(this::handleButtonSendMsg);
+        buttonAddConv.setOnAction(this::handlerButtonOpenContacts);
 
         this.loadConversas();
     }

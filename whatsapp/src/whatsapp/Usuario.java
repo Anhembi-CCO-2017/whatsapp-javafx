@@ -8,6 +8,7 @@ public class Usuario {
     private String status;
     private String telefone;
     private Image image;
+    private DateFormat ultimavezonline = DateFormat.getDateTimeInstance();
 
     public String getTelefone() {
         return telefone;
@@ -16,7 +17,6 @@ public class Usuario {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    private DateFormat ultimavezonline = DateFormat.getDateTimeInstance();
 
     public Usuario(String telefone) {
         this.telefone = telefone;
