@@ -160,6 +160,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     
+    /*Acão do botão para ... */
     @FXML
     private void handleButtonAction(ActionEvent event) {
         if(msgTextArea.getText().equals(""))
@@ -198,15 +199,27 @@ public class FXMLDocumentController implements Initializable {
         msgTextArea.clear();
     }
     
+    
+    /*  Acão do botão quando o contato é clicado.
+            Insere todas as mensagens da conversa no container de mensagens
+    */
     @FXML
     private void handleClickContact(MouseEvent event) {
+        /* slecionando o conyainer de conteúdo*/ 
         StackPane content = (StackPane) event.getSource();
+        
+        /* selecionando informacoes da conversa e coloca como coversa atual*/
         activeConv = (Conversa) content.getUserData();
+        
+        /* Arraylist com todas as mensagens */
         ArrayList<Mensagem> msgs = activeConv.getListaMensagens();
 
+        
         VBox dataText = msgContent;
-        dataText.getChildren().clear(); // DAR CLEAR SEMPRE QUE TROCAR DE MSG
+        dataText.getChildren().clear();
         dataText.setUserData(activeConv);
+        
+        /* mudar imagem e nome na conversa ativa*/
         topoNome.setText(activeConv.getUser(1).getNome());
         topoImage.setFill(new ImagePattern(activeConv.getUser(1).getImage(), 0, 0, 1, 1, true));
         
@@ -231,12 +244,10 @@ public class FXMLDocumentController implements Initializable {
                 generalGrid.add(gppText, 0, 1);
             }
             
-            
-            dataText.getChildren().add(generalGrid);
+            dataText.getChildren().add(gppText);
+
         }
-        
-        //dataText.getChildren().add(gppText);
-        
+
         msgScroll.setContent(dataText);
     }
     
