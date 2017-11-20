@@ -28,10 +28,10 @@ public class Usuario {
         this.image = new Image(getClass().getResourceAsStream(image));
     }
     
-    public Usuario(String nome, String status, String image, String telefone) {
-        this.nome = nome;
+    public Usuario(String nome, String status, String telefone, String image) {
+        this.nome = nome;   
         this.status = status;
-        this.image = new Image(getClass().getResourceAsStream(image));
+        if(!image.isEmpty()) this.image = new Image(getClass().getResourceAsStream(image));
         this.telefone = telefone;
     }
 

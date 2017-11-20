@@ -75,6 +75,7 @@ public class WhatsappInterfaceController implements Initializable {
     private boolean scrollActiveAction = false; // False = Lista de Conversas, True = Lista de contatos
     private Usuario selfUser;
     private File fileOpen; // auxiliar data para abrir arquivos.
+    private Image defaultFoto = new Image(getClass().getResourceAsStream("foto.jpg"));
 
     private StackPane genContactScrollList(Usuario usr, boolean event) {
         GridPane gppConv = new GridPane();
@@ -93,7 +94,10 @@ public class WhatsappInterfaceController implements Initializable {
 
         /* Pegando a imagem e colocando dentro de um circulo*/
         Circle foto = new Circle(40, 40, 20, Color.rgb(18,140,126));
-        foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
+        if(usr.getImage() == null)
+            foto.setFill(new ImagePattern(this.defaultFoto, 0, 0, 1, 1, true));
+        else
+            foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
 
         gppConvText.add(textConvName, 1, 0);
         gppConvText.add(textConvLast, 1, 1);
@@ -142,7 +146,10 @@ public class WhatsappInterfaceController implements Initializable {
 
         /* Pegando a imagem e colocando dentro de um circulo*/
         Circle foto = new Circle(40, 40, 20, Color.BLUE);
-        foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
+        if(usr.getImage() == null)
+            foto.setFill(new ImagePattern(this.defaultFoto, 0, 0, 1, 1, true));
+        else
+            foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
 
         gppConvText.add(textConvName, 1, 0);
         gppConvText.add(textConvLast, 1, 1);
@@ -193,10 +200,12 @@ public class WhatsappInterfaceController implements Initializable {
 
         /* mudar imagem, nome e status na conversa ativa*/
         topoNome.setText(conv.getUser(1).getNome());
-        topoImage.setFill(new ImagePattern(conv.getUser(1).getImage(), 0, 0, 1, 1, true));
+        if(conv.getUser(1).getImage() == null)
+            topoImage.setFill(new ImagePattern(defaultFoto, 0, 0, 1, 1, true));
+        else
+            topoImage.setFill(new ImagePattern(conv.getUser(1).getImage(), 0, 0, 1, 1, true));
         labelStatus.setText(conv.getUser(1).getUltimaVezOnline());
 
-        GridPane generalGrid = new GridPane();
         for (int i = 0; i < msgs.size(); i++)
         {
             GridPane gppText = new GridPane();
@@ -320,7 +329,9 @@ public class WhatsappInterfaceController implements Initializable {
             }
             
             //add user
-            this.contatos.adicionarUsuario(new Usuario(name, status, this.fileOpen.toURI().toString(), tel));
+            Usuario newUser = new Usuario(name, tel, status, "");
+            
+            this.contatos.adicionarUsuario(newUser);
             //Reload Contact List
             this.renderContactsList(this.contatos.getArrayListUsers());
             //Clearbox
@@ -547,8 +558,7 @@ public class WhatsappInterfaceController implements Initializable {
         //  Definições de Inicio
 
         /* Preenchimento de foto default para o topo*/
-        Image tfImage = new Image(getClass().getResourceAsStream("foto.jpg"));
-        topoImage.setFill(new ImagePattern(tfImage, 0, 0, 1, 1, true));
+        topoImage.setFill(new ImagePattern(defaultFoto, 0, 0, 1, 1, true));
 
         // Carrega Conversas Existentes (Gera enquanto não implementado totalmente novos contatos.)
         this.genConversas();
