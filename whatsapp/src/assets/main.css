@@ -100,8 +100,8 @@
     -fx-background-color: 
         transparent, 
         transparent, 
-        transparent,
-        #ffffff;
+        transparent, 
+        #dcf8c5;
 
 }
 
@@ -113,7 +113,7 @@
         transparent, 
         transparent, 
         transparent, 
-        #dcf8c5;
+        #ffffff;
 }
 
 .mensagem-container{
