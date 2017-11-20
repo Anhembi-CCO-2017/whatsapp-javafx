@@ -15,6 +15,8 @@ import java.util.UUID;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -283,6 +285,20 @@ public class WhatsappInterfaceController implements Initializable {
         telTF.setMaxWidth(250);
         statusTF.setMaxWidth(250);
         
+        // apenas numeros no telefone e no maximo 11 caracteres 
+        telTF.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    telTF.setText(newValue.replaceAll("[^\\d]", ""));
+                } else if (telTF.getLength() >= 12 ){
+                    telTF.setText(telTF.getText().substring(0, 11));
+                 }
+            }
+           
+        });
+
         //  FileChooser
         FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image File *.jpg", "*.jpg");
         FileChooser fotoChoose = new FileChooser();
