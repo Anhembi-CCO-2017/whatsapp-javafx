@@ -20,8 +20,9 @@ public class Mensagem {
     public void setStatus(int i){
         String status[] = {"Está sendo enviada","foi enviada",
             "Foi recebida","foi lida"};
+        
         if(i>=0 && i<=3)
-      this.status=status[i];
+            this.status=status[i];
     }
 
     public Usuario getEmissor() {
