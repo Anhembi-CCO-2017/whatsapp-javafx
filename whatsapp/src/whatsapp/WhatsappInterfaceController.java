@@ -458,9 +458,12 @@ public class WhatsappInterfaceController implements Initializable {
         vbxText.prefWidthProperty().bind(msgContent.prefWidthProperty());
         Text textMsg = new Text(msg.getTexto());
         Text textStatus = new Text(msg.getHora());
+        Text textStats = new Text(msg.getStatus()); 
+        
         textStatus.getStyleClass().add("mensagem-hora");
         gppText.add(textMsg, 0, 0);
         gppText.add(textStatus, 0, 1);
+        gppText.add(textStats, 1, 1);
 
         gppText.getStyleClass().add("mensagem");
         textMsg.wrappingWidthProperty().bind(gppText.maxWidthProperty());
@@ -478,17 +481,19 @@ public class WhatsappInterfaceController implements Initializable {
         
         for (int i = 0; i <= 4; i++) {
             Timer timer = new Timer();
-            msg.setStatus(i);
-
 
             TimerTask changeStatus = new TimerTask() {
                 public void run() {
                     //The task you want to do       
                     System.out.println(msg.getStatus());
-                    
+                    textStats.setText(msg.getStatus());
+                    msg.setStatus(msg.getStatusIndex() + 1);
+
                 }
             };
+            
             int tim = 500*i;
+            
             timer.schedule(changeStatus,tim);
         }
         
