@@ -35,10 +35,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 
-/**
- *
- * @author googs
- */
 public class WhatsappInterfaceController implements Initializable {
 
     @FXML
@@ -483,7 +479,7 @@ public class WhatsappInterfaceController implements Initializable {
         buttonAddConv.setOnAction(this::handlerButtonOpenContacts);
 
         //  Action de Buscar em Conversas;
-        searchField.setOnKeyPressed(this::handlerButtonSearch);
+        searchField.setOnKeyReleased(this::handlerButtonSearch);
 
         //  Definições de Inicio
 
