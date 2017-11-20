@@ -43,10 +43,15 @@
                      <children>
                         <HBox prefHeight="37.0" prefWidth="201.0">
                            <children>
-                              <Button mnemonicParsing="false" text="..." />
-                              <TextField prefHeight="27.0" prefWidth="210.0" text="PESQUISA" />
+                              <Button fx:id="searchButton" mnemonicParsing="false" text="..." />
+                              <TextField fx:id="searchField" prefHeight="27.0" prefWidth="210.0" text="PESQUISA" />
                            </children>
                         </HBox>
+                        <ScrollPane fx:id="contactScrollPane" hbarPolicy="NEVER" prefHeight="404.0" prefWidth="213.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                          </content>
+                        </ScrollPane>
                      </children></VBox>
                </content>
                <opaqueInsets>

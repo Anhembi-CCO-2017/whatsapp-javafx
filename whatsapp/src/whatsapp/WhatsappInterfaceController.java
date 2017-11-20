@@ -30,6 +30,7 @@ import javafx.scene.text.Text;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -43,6 +44,8 @@ public class WhatsappInterfaceController implements Initializable {
     private TextArea msgTextArea;
     @FXML
     private ScrollPane contactScroll;
+    @FXML
+    private ScrollPane contactScrollPane;
     @FXML
     private ScrollPane msgScroll;
     @FXML
@@ -59,6 +62,12 @@ public class WhatsappInterfaceController implements Initializable {
     private Button buttonAddConv;
     @FXML
     private Label labelStatus;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private HBox searchHBox;
     
     private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
@@ -105,9 +114,25 @@ public class WhatsappInterfaceController implements Initializable {
     }
     
     @FXML
+    private void handlerButtonSearch(KeyEvent event) {
+        String searchString = searchField.getText();
+        ArrayList<Conversa> foundConv = new ArrayList<>();
+        
+        for (int i = 0; i < conversas.size(); i++) {
+            Conversa conv = conversas.get(i);
+            ArrayList<Mensagem> find = conv.buscarMensagem(searchString);
+            
+            //Adiciona no ArrayList<Conversa>
+            if(find.size() > 0) foundConv.add(conv);
+        }
+        
+        this.loadConversas(foundConv);
+    }
+    
+    @FXML
     private void handlerButtonOpenContacts(ActionEvent event) {
         
-        VBox content = this.content;
+        VBox content = new VBox();
 
         GridPane upSide = new GridPane();
         upSide.add(new Text("\t"), 0, 0);
@@ -139,7 +164,7 @@ public class WhatsappInterfaceController implements Initializable {
         content.getChildren().add(downSide);
         content.getChildren().add(scrollContactContent);
 
-        contactScroll.setContent(content);
+        contactScrollPane.setContent(content);
     }
 
     
@@ -156,7 +181,7 @@ public class WhatsappInterfaceController implements Initializable {
         //Caso Contato envie msg, atualiza o UltimaVezOnline
         if(switchState) {
             activeConv.getUser(1).setUltimaVezOnline(new Date(System.currentTimeMillis()));
-            //labelStatus.setText(activeConv.getUser(1).getUltimavezonline().getCalendar().getDisplayName(35, Calendar.SHORT_FORMAT, Locale.ENGLISH));
+            labelStatus.setText(activeConv.getUser(1).getUltimaVezOnline());
         }
         
         GridPane gppText = new GridPane();
@@ -197,14 +222,14 @@ public class WhatsappInterfaceController implements Initializable {
         /* Arraylist com todas as mensagens */
         ArrayList<Mensagem> msgs = activeConv.getListaMensagens();
 
-        
         VBox dataText = msgContent;
         dataText.getChildren().clear();
         dataText.setUserData(activeConv);
         
-        /* mudar imagem e nome na conversa ativa*/
+        /* mudar imagem, nome e status na conversa ativa*/
         topoNome.setText(activeConv.getUser(1).getNome());
         topoImage.setFill(new ImagePattern(activeConv.getUser(1).getImage(), 0, 0, 1, 1, true));
+        labelStatus.setText(activeConv.getUser(1).getUltimaVezOnline());
         
         GridPane generalGrid = new GridPane();
         for (int i = 0; i < msgs.size(); i++)
@@ -228,7 +253,6 @@ public class WhatsappInterfaceController implements Initializable {
             }
             
             dataText.getChildren().add(gppText);
-
         }
 
         msgScroll.setContent(dataText);
@@ -243,8 +267,13 @@ public class WhatsappInterfaceController implements Initializable {
         for (int i = 1; i < 8; i++) {
             Usuario user = new Usuario("Carlos"+i, "cade 2 segunda chance");
             Conversa conv = new Conversa(me, user);
+            
+            user.setUltimaVezOnline(new Date(System.currentTimeMillis()));
             user.setImage("foto"+i+".jpg");
+            
             this.contatos.adicionarUsuario(user);
+            
+            //  switcher para alterar de quem é a mensagem gerada.
             boolean swtch = false;
                     
             for(int j = 0; i < r.nextInt(50); j++) {
@@ -260,18 +289,12 @@ public class WhatsappInterfaceController implements Initializable {
         }
     }
     
-    private void loadConversas() {
-        this.genConversas();
+    private void loadConversas(ArrayList<Conversa> conv) {
+        VBox content = new VBox();
         
-        VBox content = this.content;                
-        
-        /* Preenchimento de foto default para o topo*/
-        Image tfImage = new Image(getClass().getResourceAsStream("foto.jpg")); 
-        topoImage.setFill(new ImagePattern(tfImage, 0, 0, 1, 1, true));
-        
-        for (int i = 0; i < conversas.size(); i++)
+        for (int i = 0; i < conv.size(); i++)
         {
-            Usuario usr = conversas.get(i).getUser(1);
+            Usuario usr = conv.get(i).getUser(1);
             
             GridPane gppConv = new GridPane();
             gppConv.getStyleClass().add("conversa");
@@ -286,8 +309,8 @@ public class WhatsappInterfaceController implements Initializable {
             /* Ultima mensagem da conversa dentro de um Text */
             String textDataConvLast;
                     
-            if(conversas.get(i).getListaMensagens().size() > 0)
-                textDataConvLast = conversas.get(i).retornarMensagemString(conversas.get(i).getListaMensagens().size() - 1);
+            if(conv.get(i).getListaMensagens().size() > 0)
+                textDataConvLast = conv.get(i).retornarMensagemString(conv.get(i).getListaMensagens().size() - 1);
             else
                 textDataConvLast = "";
             
@@ -308,23 +331,41 @@ public class WhatsappInterfaceController implements Initializable {
             
             StackPane layout = new StackPane();
             layout.getChildren().addAll(gppConv);
-            layout.setUserData(conversas.get(i));
-//            topoNome.setText(conversas.get(i).getUser(1).getNome());
+            layout.setUserData(conv.get(i));
             layout.onMouseClickedProperty().set(this::handleClickContact);
 
             content.getChildren().add(layout);
         }
         
-        contactScroll.setContent(content);
+        contactScrollPane.setContent(content);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        // Action da Troca de Usuario
         userSwitch.setOnAction(this::handlerUserSwitch);
+        
+        //  Action do botão de Envio
         send.setOnAction(this::handleButtonSendMsg);
+        
+        // Action de Adicionar novo Contato/Conversa.
         buttonAddConv.setOnAction(this::handlerButtonOpenContacts);
-
-        this.loadConversas();
+        
+        //  Action de Buscar em Conversas;
+        //searchButton.setOnAction(this::handlerButtonSearch);
+        
+        searchField.setOnKeyPressed(this::handlerButtonSearch);
+        
+        //  Definições de Inicio
+        
+        /* Preenchimento de foto default para o topo*/
+        Image tfImage = new Image(getClass().getResourceAsStream("foto.jpg")); 
+        topoImage.setFill(new ImagePattern(tfImage, 0, 0, 1, 1, true));
+        
+        // Carrega Conversas Existentes (Gera enquanto não implementado totalmente novos contatos.)
+        this.genConversas();
+        this.loadConversas(this.conversas);
     }
    
 }

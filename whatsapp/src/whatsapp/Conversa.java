@@ -50,7 +50,7 @@ public class Conversa {
     private static boolean searchWords(String[] msgData, String[] buscaData) {
         for (String word : buscaData)
             for (String data : msgData)
-                if (data.equals(word))
+                if (data.equals(word) || data.contains(word))
                     return true;
         
         return false;
