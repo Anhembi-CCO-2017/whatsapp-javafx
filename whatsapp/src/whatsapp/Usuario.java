@@ -27,6 +27,13 @@ public class Usuario {
         this.status = status;
         this.image = new Image(getClass().getResourceAsStream(image));
     }
+    
+    public Usuario(String nome, String status, String image, String telefone) {
+        this.nome = nome;
+        this.status = status;
+        this.image = new Image(getClass().getResourceAsStream(image));
+        this.telefone = telefone;
+    }
 
     public String getNome() {
         return nome;

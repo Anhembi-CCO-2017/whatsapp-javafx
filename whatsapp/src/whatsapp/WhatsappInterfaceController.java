@@ -32,6 +32,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 
 /**
  *
@@ -250,6 +251,32 @@ public class WhatsappInterfaceController implements Initializable {
 
     @FXML
     private void handleClickAddContact(MouseEvent event) {
+        //  Area de Mensagem:
+        VBox layout = msgContent;
+
+        //  Limpando para renderizar box de contato;
+        layout.getChildren().clear();
+        
+        //  Definindo componentes
+        // Labels
+        Label nameLabel = new Label("Nome do Contato:");
+        Label telLabel = new Label("Telefone do Contato:");
+        Label statusLabel = new Label("Status do Contato:");
+        Label fotoLabel = new Label("Selecione uma foto para o contato:");     
+        //  TextField
+        TextField nameTF = new TextField();
+        TextField telTF = new TextField();
+        TextField statusTF = new TextField();
+        //  Defs of TextField
+        nameTF.setMaxWidth(250);
+        telTF.setMaxWidth(250);
+        statusTF.setMaxWidth(250);
+        //  FileChooser
+        FileChooser fotoChoose = new FileChooser();
+        fotoChoose.setTitle("Selecione uma foto");
+        // fotoChoose. (Colocar só .jpg)
+        // Button
+        
         return;
     }
     

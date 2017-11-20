@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 public class Whatsapp extends Application {
     
+    // Ideias para o Seriallize
+    // https://stackoverflow.com/questions/14187963/passing-parameters-javafx-fxml
+    
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader layout = new FXMLLoader(getClass().getResource("WhatsappInterface.fxml"));  
