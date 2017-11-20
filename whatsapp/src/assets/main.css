@@ -105,6 +105,9 @@
 
 }
 
+.mensagem-text{
+	-fx-max-width: 300;
+}
 .mensagem-right{
     -fx-background-color: 
         transparent, 
