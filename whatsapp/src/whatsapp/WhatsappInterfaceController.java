@@ -502,6 +502,7 @@ public class WhatsappInterfaceController implements Initializable {
             vbxText.setAlignment(Pos.TOP_LEFT);
             gppText.getStyleClass().add("mensagem-left");
         }
+
         textMsg.wrappingWidthProperty();
         vbxText.getChildren().add(gppText);
         
@@ -599,7 +600,10 @@ public class WhatsappInterfaceController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
+        // Inicializa o Usuario
+        this.selfUser = new Usuario("Golinux", "**nao de um push pf**");
+                
         // Action da Troca de Usuario
         userSwitch.setOnAction(this::handlerUserSwitch);
 
