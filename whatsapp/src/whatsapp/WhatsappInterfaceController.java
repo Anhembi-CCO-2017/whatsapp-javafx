@@ -13,8 +13,6 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -77,7 +75,7 @@ public class WhatsappInterfaceController implements Initializable {
     private boolean scrollActiveAction = false; // False = Lista de Conversas, True = Lista de contatos
     private Usuario selfUser;
     private File fileOpen; // auxiliar data para abrir arquivos.
-    private Image defaultFoto = new Image(getClass().getResourceAsStream("placeholder.png"));
+    private Image defaultFoto = new Image(getClass().getResourceAsStream("foto.jpg"));
 
     private StackPane genContactScrollList(Usuario usr, boolean event) {
         GridPane gppConv = new GridPane();
@@ -454,23 +452,6 @@ public class WhatsappInterfaceController implements Initializable {
         textMsg.wrappingWidthProperty();
         vbxText.getChildren().add(gppText);
         
-        
-        for (int i = 0; i <= 4; i++) {
-            Timer timer = new Timer();
-            msg.setStatus(i);
-
-
-            TimerTask changeStatus = new TimerTask() {
-                public void run() {
-                    //The task you want to do       
-                    System.out.println(msg.getStatus());
-                    
-                }
-            };
-            int tim = 500*i;
-            timer.schedule(changeStatus,tim);
-        }
-        
         msgContent.getChildren().add(vbxText);
         msgTextArea.clear();
         
@@ -585,6 +566,5 @@ public class WhatsappInterfaceController implements Initializable {
         bubbleSortForSortConvers();
         this.loadConversas(this.conversas);
     }
-    
 
 }
