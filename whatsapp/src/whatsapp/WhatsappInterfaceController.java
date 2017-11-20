@@ -211,11 +211,11 @@ public class WhatsappInterfaceController implements Initializable {
             gppText.getStyleClass().add("mensagem");
             
             if(msg.getEmissor().equals(conv.getUser(0))){
-                gppText.getStyleClass().add("mensagem-left");
-                vbxText.setAlignment(Pos.TOP_LEFT);
-            }else{
                 gppText.getStyleClass().add("mensagem-right");
                 vbxText.setAlignment(Pos.TOP_RIGHT);
+            }else{
+                gppText.getStyleClass().add("mensagem-left");
+                vbxText.setAlignment(Pos.TOP_LEFT);
             }
             
              vbxText.getChildren().add(gppText);
@@ -369,11 +369,11 @@ public class WhatsappInterfaceController implements Initializable {
         textMsg.wrappingWidthProperty().bind(gppText.maxWidthProperty());
 
         if(msg.getEmissor().equals(activeConv.getUser(0))){
-            vbxText.setAlignment(Pos.TOP_LEFT);
-            gppText.getStyleClass().add("mensagem-left");
-        }else{
             vbxText.setAlignment(Pos.TOP_RIGHT);
             gppText.getStyleClass().add("mensagem-right");
+        }else{
+            vbxText.setAlignment(Pos.TOP_LEFT);
+            gppText.getStyleClass().add("mensagem-left");
         }
         textMsg.wrappingWidthProperty();
         vbxText.getChildren().add(gppText);
