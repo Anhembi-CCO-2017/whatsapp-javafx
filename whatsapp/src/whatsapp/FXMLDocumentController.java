@@ -8,6 +8,7 @@ package whatsapp;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.UUID;
@@ -155,7 +156,7 @@ public class FXMLDocumentController implements Initializable {
         
         //Caso Contato envie msg, atualiza o UltimaVezOnline
         if(switchState) {
-            activeConv.getUser(1).setUltimavezonline(DateFormat.getDateTimeInstance());
+            activeConv.getUser(1).setUltimaVezOnline(new Date(System.currentTimeMillis()));
             //labelStatus.setText(activeConv.getUser(1).getUltimavezonline().getCalendar().getDisplayName(35, Calendar.SHORT_FORMAT, Locale.ENGLISH));
         }
         
