@@ -14,7 +14,11 @@ public class Conversa {
     public Conversa(Usuario user1, Usuario user2) {
         user.add(user1);
         user.add(user2);
-    } 
+    }
+    
+    public Usuario getUser(int index) {
+        return user.get(index);
+    }
 
     public ArrayList<Mensagem> getListaMensagens() {
         return listaMensagens;
@@ -54,5 +58,9 @@ public class Conversa {
 
     public Mensagem retornarMensagem(int index){
         return listaMensagens.get(index);
+    }
+    
+    public String retornarMensagemString(int index){
+        return listaMensagens.get(index).getTexto();
     }
 }

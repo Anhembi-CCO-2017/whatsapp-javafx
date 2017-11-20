@@ -1,24 +1,20 @@
 package whatsapp;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javafx.scene.image.Image;
 
 public class Usuario {
 
     private String nome;
     private String status;
     private String telefone;
+    private Image image;
     private Date ultimavezonline = new Date();
-    
-    public String getTelefone() {
-        return telefone;
-    }
 
-    public void setTelefone(String telefone) {
+    public Usuario(String telefone) {
         this.telefone = telefone;
-    }
-    
-    public Usuario() {
     }
 
     public Usuario(String nome, String status) {
@@ -29,7 +25,7 @@ public class Usuario {
     public String getNome() {
         return nome;
     }
-
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -42,18 +38,34 @@ public class Usuario {
         this.status = status;
     }
 
-    public void setUltimavezonline(Date ultimavezonline) {
+    public void setImage(String image) {
+        this.image = new Image(getClass().getResourceAsStream(image));
+    }
+    
+    public Image getImage() {
+        return image;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setUltimaVezOnline(Date ultimavezonline) {
         
         this.ultimavezonline = ultimavezonline;
     }
 
-    public String getUltimavezonline() {
+    public String getUltimaVezOnline() {
         
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         return dateFormat.format(ultimavezonline);
     }
     
-    public Date GetDateObject(){
+    public Date getDateObject(){
     
         return this.ultimavezonline;
     }

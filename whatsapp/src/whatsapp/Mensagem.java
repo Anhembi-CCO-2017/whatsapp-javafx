@@ -24,7 +24,11 @@ public class Mensagem {
       this.status=status[i];
     }
 
-    public String getEmissor() {
+    public Usuario getEmissor() {
+        return emissor;
+    }
+
+    public String getEmissorName() {
         return emissor.getNome();
     }
 
@@ -39,6 +43,9 @@ public class Mensagem {
     public Calendar getDataHora() {
         return dataHora;
     }
-
+    
+    public String getHora() {
+        return dataHora.get(Calendar.HOUR) + ":" + dataHora.get(Calendar.MINUTE);
+    }
 
 }

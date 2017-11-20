@@ -1,9 +1,10 @@
 
 package whatsapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Contatos {
+public class Contatos implements Serializable {
     
     private static ArrayList<Usuario>listaUsuarios = new ArrayList<>();
 
@@ -20,6 +21,11 @@ public class Contatos {
         listaUsuarios.add(usuario);
         
     }
+    
+    public ArrayList<Usuario> getArrayListUsers() {
+        return this.listaUsuarios;
+    }
+    
     public String listarUsuario(){
     
         String saida = "";
