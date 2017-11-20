@@ -259,7 +259,29 @@ public class WhatsappInterfaceController implements Initializable {
         // Reload no frame de conversas apos a re-ordem.
         this.loadConversas(this.conversas);
     }
+    
+    private void bubbleSortForSortContact() {
+        int size = contatos.getArrayListUsers().size();
+        ArrayList<Usuario> outList = contatos.getArrayListUsers();
+        
+        Usuario auxiliar;
 
+        for (int i = 0; i < size; i++)
+            for(int j=0; j < size-1; j++) {
+                String first = outList.get(j).getNome().toLowerCase();
+                String next = outList.get(j+1).getNome().toLowerCase();
+                
+                if(next.compareTo(first) < 0) {
+                    auxiliar = outList.get(j);
+                    outList.set(j, outList.get(j+1));
+                    outList.set(j+1, auxiliar);
+                }
+            }
+        
+        //  Atualizando nova lista de contatos
+        contatos.setListaUsuarios(outList);
+    }
+    
     @FXML
     private void handlerUserSwitch(ActionEvent event) {
         this.switchState = !this.switchState;
@@ -331,9 +353,9 @@ public class WhatsappInterfaceController implements Initializable {
             
             //add user
             Usuario newUser = new Usuario(name, tel, status, this.fileOpen.toURI().toString());
-            
             this.contatos.adicionarUsuario(newUser);
-            //Reload Contact List
+            //Reordena e Reload Contact List
+            bubbleSortForSortContact();
             this.renderContactsList(this.contatos.getArrayListUsers());
             //Clearbox
             layout.getChildren().clear();
@@ -391,7 +413,7 @@ public class WhatsappInterfaceController implements Initializable {
                 Usuario user = contatos.getArrayListUsers().get(i);
 
                 //Adiciona no ArrayList<Conversa> foundConv
-                if(user.getNome().contains(searchString)) 
+                if(user.getNome().toLowerCase().contains(searchString)) 
                     foundUser.add(user);
             }
             
@@ -547,6 +569,8 @@ public class WhatsappInterfaceController implements Initializable {
 
             conversas.add(conv);
         }
+        
+        bubbleSortForSortContact();
     }
 
     private void loadConversas(ArrayList<Conversa> conv) {
