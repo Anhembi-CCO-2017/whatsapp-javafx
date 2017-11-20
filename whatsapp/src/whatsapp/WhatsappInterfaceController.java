@@ -37,7 +37,7 @@ import javafx.scene.input.KeyEvent;
  * @author googs
  */
 public class WhatsappInterfaceController implements Initializable {
-    
+
     @FXML
     private Button send;
     @FXML
@@ -65,15 +65,14 @@ public class WhatsappInterfaceController implements Initializable {
     @FXML
     private TextField searchField;
     @FXML
-    private Button searchButton;
-    @FXML
     private HBox searchHBox;
-    
+
     private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
     private Conversa activeConv;
     private boolean switchState = false;
-    
+    private boolean scrollActiveAction = false; // False = Lista de Conversas, True = Lista de contatos
+
     @FXML
     private StackPane genScrollList(Usuario usr) {
         GridPane gppConv = new GridPane();
@@ -107,95 +106,123 @@ public class WhatsappInterfaceController implements Initializable {
 
         return layout;
     }
-    
+
     @FXML
     private void handlerUserSwitch(ActionEvent event) {
         this.switchState = !this.switchState;
     }
-    
+
     @FXML
     private void handlerButtonSearch(KeyEvent event) {
         String searchString = searchField.getText();
-        ArrayList<Conversa> foundConv = new ArrayList<>();
         
-        for (int i = 0; i < conversas.size(); i++) {
-            Conversa conv = conversas.get(i);
-            ArrayList<Mensagem> find = conv.buscarMensagem(searchString);
+        //  Busca caso Lista de Conversa
+        if(!scrollActiveAction) {
+            ArrayList<Conversa> foundConv = new ArrayList<>();
             
-            //Adiciona no ArrayList<Conversa>
-            if(find.size() > 0) foundConv.add(conv);
+            if(searchString.isEmpty()) {
+                this.loadConversas(conversas);
+                return;
+            }
+            
+            for (int i = 0; i < conversas.size(); i++) {
+                Conversa conv = conversas.get(i);
+                ArrayList<Mensagem> find = conv.buscarMensagem(searchString);
+
+                //Adiciona no ArrayList<Conversa> foundConv
+                if(find.size() > 0) foundConv.add(conv);
+            }
+            
+            this.loadConversas(foundConv);
+        } else { //  Busca caso Lista de Contatos
+            ArrayList<Usuario> foundUser = new ArrayList<>();
+            
+            if(searchString.isEmpty()) {
+                this.renderContactsList(contatos.getArrayListUsers());
+                return;
+            }
+            
+            for (int i = 0; i < contatos.getArrayListUsers().size(); i++) {
+                Usuario user = contatos.getArrayListUsers().get(i);
+
+                //Adiciona no ArrayList<Conversa> foundConv
+                if(user.getNome().contains(searchString)) 
+                    foundUser.add(user);
+            }
+            
+            this.renderContactsList(foundUser);
         }
-        
-        this.loadConversas(foundConv);
     }
-    
+
     @FXML
     private void handlerButtonOpenContacts(ActionEvent event) {
+
+        //  Faz com que o botão de adicionar conversa vire de cancelar e voltar.
+        if(scrollActiveAction) {
+            scrollActiveAction = !scrollActiveAction;
+            buttonAddConv.setText("add conversa");
+            this.loadConversas(conversas);
+
+            return;
+        } else scrollActiveAction = !scrollActiveAction;
         
+        this.renderContactsList(contatos.getArrayListUsers());
+
+    }
+    
+    //  Renderiza lista de contatos
+    private void renderContactsList(ArrayList<Usuario> data) {
         VBox content = new VBox();
 
-        GridPane upSide = new GridPane();
-        upSide.add(new Text("\t"), 0, 0);
-        upSide.add(new Text("New Chat\t     "), 1, 0);
-        Button btCancel = new Button("Cancelar");
-        btCancel.setStyle("user");
-        upSide.add(btCancel, 2, 0);
-        
-        HBox downSide = new HBox();
-        TextField searchBox = new TextField("Search\t\t\t\t");
-        downSide.getChildren().add(new Button("..."));
-        downSide.getChildren().add(searchBox);
-
         VBox scrollContactContent = new VBox();
-        ArrayList<Usuario> data = contatos.getArrayListUsers();
-        
+
+        //Define como cancelar botão de janela
+        buttonAddConv.setText("Cancelar");
+
         //Gambiarra para criar o novo contato.
         Usuario newContact = new Usuario("", "Novo contato");
         newContact.setImage("contact.jpg");
-        
+
         scrollContactContent.getChildren().add(this.genScrollList(newContact));
-        
+
         // Monta lista de usuarios
         for (int i = 0; i < data.size(); i++)
             scrollContactContent.getChildren().add(this.genScrollList(data.get(i)));
 
-        content.getChildren().clear();
-        content.getChildren().add(upSide);
-        content.getChildren().add(downSide);
         content.getChildren().add(scrollContactContent);
 
         contactScrollPane.setContent(content);
     }
 
-    
+
     /*Acão do botão para Enviar msg */
     @FXML
     private void handleButtonSendMsg(ActionEvent event) {
         if(msgTextArea.getText().equals(""))
             return;
-        
+
         int userID = (switchState) ? 1 : 0;
         activeConv.addMensagem(userID, msgTextArea.getText());
         ArrayList<Mensagem> msgs = activeConv.getListaMensagens();
-        
+
         //Caso Contato envie msg, atualiza o UltimaVezOnline
         if(switchState) {
             activeConv.getUser(1).setUltimaVezOnline(new Date(System.currentTimeMillis()));
             labelStatus.setText(activeConv.getUser(1).getUltimaVezOnline());
         }
-        
+
         GridPane gppText = new GridPane();
         Mensagem msg = msgs.get(msgs.size()-1);
-        
+
         Text textMsg = new Text(msg.getTexto());
         Text textStatus = new Text(msg.getHora());
-        
+
         textStatus.getStyleClass().add("mensagem-hora");
         gppText.add(textMsg, 0, 0);
         gppText.add(textStatus, 0, 1);
-            
+
         gppText.getStyleClass().add("mensagem");
-            
+
         if(msg.getEmissor().equals(activeConv.getUser(0))){
             gppText.setHalignment(textStatus, HPos.CENTER);
             gppText.getStyleClass().add("mensagem-left");
@@ -203,46 +230,46 @@ public class WhatsappInterfaceController implements Initializable {
             gppText.setHalignment(textStatus, HPos.CENTER);
             gppText.getStyleClass().add("mensagem-right");
         }
-        
+
         msgContent.getChildren().add(gppText);
         msgTextArea.clear();
     }
-    
+
     /*  Acão do botão quando o contato é clicado.
             Insere todas as mensagens da conversa no container de mensagens
     */
     @FXML
     private void handleClickContact(MouseEvent event) {
-        /* slecionando o conyainer de conteúdo*/ 
+        /* slecionando o conyainer de conteúdo*/
         StackPane content = (StackPane) event.getSource();
-        
+
         /* selecionando informacoes da conversa e coloca como coversa atual*/
         activeConv = (Conversa) content.getUserData();
-        
+
         /* Arraylist com todas as mensagens */
         ArrayList<Mensagem> msgs = activeConv.getListaMensagens();
 
         VBox dataText = msgContent;
         dataText.getChildren().clear();
         dataText.setUserData(activeConv);
-        
+
         /* mudar imagem, nome e status na conversa ativa*/
         topoNome.setText(activeConv.getUser(1).getNome());
         topoImage.setFill(new ImagePattern(activeConv.getUser(1).getImage(), 0, 0, 1, 1, true));
         labelStatus.setText(activeConv.getUser(1).getUltimaVezOnline());
-        
+
         GridPane generalGrid = new GridPane();
         for (int i = 0; i < msgs.size(); i++)
         {
             GridPane gppText = new GridPane();
             Mensagem msg = msgs.get(i);
-            
+
             Text textMsg = new Text(msg.getTexto());
             Text textStatus = new Text(msg.getHora());
             textStatus.getStyleClass().add("mensagem-hora");
             gppText.add(textMsg, 0, 0);
             gppText.add(textStatus, 0, 1);
-            
+
             gppText.getStyleClass().add("mensagem");
             if(msg.getEmissor().equals(activeConv.getUser(0))){
                 gppText.getStyleClass().add("mensagem-left");
@@ -251,84 +278,84 @@ public class WhatsappInterfaceController implements Initializable {
                 gppText.getStyleClass().add("mensagem-right");
                 generalGrid.add(gppText, 0, 1);
             }
-            
+
             dataText.getChildren().add(gppText);
         }
 
         msgScroll.setContent(dataText);
     }
-    
+
     //ESSA FUNCAO SO VAI EXISTIR POR ENQUANTO
     //DEPOIS QUE EXISTIR A OPCAO DE INICIAR CONVERSA ELA VAI PRO BELELEU
     private void genConversas() {
         Usuario me = new Usuario("Eu", "stackoverflow");
         Random r = new Random();
-        
+
         for (int i = 1; i < 8; i++) {
             Usuario user = new Usuario("Carlos"+i, "cade 2 segunda chance");
             Conversa conv = new Conversa(me, user);
-            
+
             user.setUltimaVezOnline(new Date(System.currentTimeMillis()));
             user.setImage("foto"+i+".jpg");
-            
+
             this.contatos.adicionarUsuario(user);
-            
+
             //  switcher para alterar de quem é a mensagem gerada.
             boolean swtch = false;
-                    
+
             for(int j = 0; i < r.nextInt(50); j++) {
                 if(swtch)
                     conv.addMensagem(0, UUID.randomUUID().toString());
                 else
                     conv.addMensagem(1, UUID.randomUUID().toString());
-                
+
                 swtch = !swtch;
             }
-            
+
             conversas.add(conv);
         }
     }
-    
+
     private void loadConversas(ArrayList<Conversa> conv) {
         VBox content = new VBox();
-        
+
         for (int i = 0; i < conv.size(); i++)
         {
             Usuario usr = conv.get(i).getUser(1);
-            
+
             GridPane gppConv = new GridPane();
             gppConv.getStyleClass().add("conversa");
-            
+
             GridPane gppConvText = new GridPane();
             gppConvText.getStyleClass().add("conversa-texts");
-            
+
             /* Nome do usuário dentro de um Text */
             Text textConvName = new Text(usr.getNome());
             textConvName.getStyleClass().add("conversa-name");
-            
+
             /* Ultima mensagem da conversa dentro de um Text */
             String textDataConvLast;
-                    
+
             if(conv.get(i).getListaMensagens().size() > 0)
                 textDataConvLast = conv.get(i).retornarMensagemString(conv.get(i).getListaMensagens().size() - 1);
             else
                 textDataConvLast = "";
-            
+
             Text textConvLast = new Text(""+textDataConvLast);
             textConvLast.getStyleClass().add("conversa-last");
-            
-            
+
+
             /* Pegando a imagem e colocando dentro de um circulo*/
             Circle foto = new Circle(40, 40, 20, Color.BLUE);
             foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
 
             gppConvText.add(textConvName, 1, 0);
             gppConvText.add(textConvLast, 1, 1);
-            
+
             gppConv.add(gppConvText, 1, 0);
             gppConv.add(foto, 0, 0);
-            
-            
+
+
             StackPane layout = new StackPane();
             layout.getChildren().addAll(gppConv);
             layout.setUserData(conv.get(i));
@@ -336,36 +363,34 @@ public class WhatsappInterfaceController implements Initializable {
 
             content.getChildren().add(layout);
         }
-        
+
         contactScrollPane.setContent(content);
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         // Action da Troca de Usuario
         userSwitch.setOnAction(this::handlerUserSwitch);
-        
+
         //  Action do botão de Envio
         send.setOnAction(this::handleButtonSendMsg);
-        
+
         // Action de Adicionar novo Contato/Conversa.
         buttonAddConv.setOnAction(this::handlerButtonOpenContacts);
-        
+
         //  Action de Buscar em Conversas;
-        //searchButton.setOnAction(this::handlerButtonSearch);
-        
         searchField.setOnKeyPressed(this::handlerButtonSearch);
-        
+
         //  Definições de Inicio
-        
+
         /* Preenchimento de foto default para o topo*/
-        Image tfImage = new Image(getClass().getResourceAsStream("foto.jpg")); 
+        Image tfImage = new Image(getClass().getResourceAsStream("foto.jpg"));
         topoImage.setFill(new ImagePattern(tfImage, 0, 0, 1, 1, true));
-        
+
         // Carrega Conversas Existentes (Gera enquanto não implementado totalmente novos contatos.)
         this.genConversas();
         this.loadConversas(this.conversas);
     }
-   
+
 }

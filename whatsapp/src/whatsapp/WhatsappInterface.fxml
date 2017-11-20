@@ -41,10 +41,9 @@
                <content>
                   <VBox fx:id="content" alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="426.0" prefWidth="213.0">
                      <children>
-                        <HBox prefHeight="37.0" prefWidth="201.0">
+                        <HBox fx:id="searchHBox" prefHeight="37.0" prefWidth="201.0">
                            <children>
-                              <Button fx:id="searchButton" mnemonicParsing="false" text="..." />
-                              <TextField fx:id="searchField" prefHeight="27.0" prefWidth="210.0" text="PESQUISA" />
+                              <TextField fx:id="searchField" prefHeight="27.0" prefWidth="210.0" promptText="Search..." />
                            </children>
                         </HBox>
                         <ScrollPane fx:id="contactScrollPane" hbarPolicy="NEVER" prefHeight="404.0" prefWidth="213.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
