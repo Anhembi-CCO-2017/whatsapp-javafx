@@ -273,9 +273,9 @@ public class WhatsappInterfaceController implements Initializable {
         statusTF.setMaxWidth(250);
         
         //  FileChooser
-        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image File", "*.jpg");
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image File *.jpg", "*.jpg");
         FileChooser fotoChoose = new FileChooser();
-        fotoChoose.setSelectedExtensionFilter(imageFilter);
+        fotoChoose.getExtensionFilters().add(imageFilter);
         fotoChoose.setTitle("Selecione uma foto");
         // fotoChoose. (Colocar só .jpg)
         
@@ -292,6 +292,14 @@ public class WhatsappInterfaceController implements Initializable {
         fotoOpen.setOnAction((e) -> {
             this.fileOpen = fotoChoose.showOpenDialog(new Stage());
             System.out.println(this.fileOpen.toURI());
+        });
+        
+        adduser.setOnAction((e) -> {
+            System.out.println(nameTF.getText());
+        });
+        
+        cancel.setOnAction((e) -> {
+           layout.getChildren().clear(); 
         });
 
         //Adicionando componentes
