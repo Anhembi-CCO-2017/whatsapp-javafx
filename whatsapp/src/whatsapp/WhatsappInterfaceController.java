@@ -175,7 +175,7 @@ public class WhatsappInterfaceController implements Initializable {
         VBox scrollContactContent = new VBox();
 
         //Define como cancelar botão de janela
-        buttonAddConv.setText("cancelar");
+        buttonAddConv.setText("x");
 
         //Gambiarra para criar o novo contato.
         Usuario newContact = new Usuario("", "Novo contato");
@@ -405,7 +405,7 @@ public class WhatsappInterfaceController implements Initializable {
         //  Faz com que o botão de adicionar conversa vire de cancelar e voltar.
         if(scrollActiveAction) {
             scrollActiveAction = !scrollActiveAction;
-            buttonAddConv.setText("Começar nova conversa");
+            buttonAddConv.setText("+");
             this.loadConversas(conversas);
 
             return;
