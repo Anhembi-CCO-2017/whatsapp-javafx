@@ -43,7 +43,7 @@
                               <TextField fx:id="searchField" prefHeight="27.0" prefWidth="210.0" promptText="Search..." />
                            </children>
                         </HBox>
-                        <ScrollPane fx:id="contactScrollPane" hbarPolicy="NEVER" prefHeight="355.0" prefWidth="213.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                        <ScrollPane fx:id="contactScrollPane" hbarPolicy="NEVER" prefHeight="389.0" prefWidth="213.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                           </content>
