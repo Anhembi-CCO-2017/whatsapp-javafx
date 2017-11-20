@@ -33,24 +33,33 @@
           <RowConstraints maxHeight="438.0" minHeight="10.0" prefHeight="430.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="59.0" prefWidth="175.0" styleClass="user">
-               <children>
-                  <Button fx:id="buttonAddConv" layoutX="89.0" layoutY="16.0" mnemonicParsing="false" text="add conversa" />
-               </children></Pane>
+            <Pane prefHeight="59.0" prefWidth="175.0" styleClass="user" />
             <ScrollPane fx:id="contactScroll" hbarPolicy="NEVER" prefHeight="305.0" prefWidth="103.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <content>
-                  <VBox fx:id="content" alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="426.0" prefWidth="213.0">
+                  <VBox fx:id="content" alignment="BOTTOM_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="426.0" prefWidth="213.0">
                      <children>
                         <HBox fx:id="searchHBox" prefHeight="37.0" prefWidth="201.0">
                            <children>
                               <TextField fx:id="searchField" prefHeight="27.0" prefWidth="210.0" promptText="Search..." />
                            </children>
                         </HBox>
-                        <ScrollPane fx:id="contactScrollPane" hbarPolicy="NEVER" prefHeight="404.0" prefWidth="213.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                        <ScrollPane fx:id="contactScrollPane" hbarPolicy="NEVER" prefHeight="355.0" prefWidth="213.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                           </content>
                         </ScrollPane>
+                        <HBox alignment="TOP_RIGHT" maxHeight="0.0" minHeight="0.0" prefHeight="0.0" prefWidth="213.0">
+                           <children>
+                              <Button fx:id="buttonAddConv" alignment="CENTER" minHeight="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-translate-y: -50; -fx-background-color: #13897d;" text="+" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children></VBox>
                </content>
                <opaqueInsets>
