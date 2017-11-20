@@ -31,7 +31,7 @@ public class Usuario {
     public Usuario(String nome, String status, String telefone, String image) {
         this.nome = nome;   
         this.status = status;
-        if(!image.isEmpty()) this.image = new Image(getClass().getResourceAsStream(image));
+        if(!image.isEmpty()) this.image = new Image(image);
         this.telefone = telefone;
     }
 
