@@ -291,11 +291,40 @@ public class WhatsappInterfaceController implements Initializable {
         //Button Events
         fotoOpen.setOnAction((e) -> {
             this.fileOpen = fotoChoose.showOpenDialog(new Stage());
-            System.out.println(this.fileOpen.toURI());
+            System.out.println(this.fileOpen.toURI().toString());
         });
         
         adduser.setOnAction((e) -> {
-            System.out.println(nameTF.getText());
+            String name = nameTF.getText();
+            String tel = telTF.getText();
+            String status = statusTF.getText();
+            
+            // Tratamento de informações
+            if(name.isEmpty()) {
+                nameTF.setStyle("-fx-background-color: firebrick;");
+                return;
+            } else if(tel.isEmpty()) {
+                telTF.setStyle("-fx-background-color: firebrick;");
+                return;
+            } else if(status.isEmpty()) {
+                statusTF.setStyle("-fx-background-color: firebrick;");
+                return;                    
+            } else if(this.fileOpen != null) {
+                if(!this.fileOpen.isFile()) {
+                    fotoOpen.setStyle("-fx-background-color: firebrick;");
+                    return;
+                }
+            } else if(this.fileOpen == null) {
+                fotoOpen.setStyle("-fx-background-color: firebrick;");
+                return;
+            }
+            
+            //add user
+            this.contatos.adicionarUsuario(new Usuario(name, status, this.fileOpen.toURI().toString(), tel));
+            //Reload Contact List
+            this.renderContactsList(this.contatos.getArrayListUsers());
+            //Clearbox
+            layout.getChildren().clear();
         });
         
         cancel.setOnAction((e) -> {
