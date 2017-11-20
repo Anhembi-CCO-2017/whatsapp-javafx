@@ -302,7 +302,6 @@ public class WhatsappInterfaceController implements Initializable {
         //Button Events
         fotoOpen.setOnAction((e) -> {
             this.fileOpen = fotoChoose.showOpenDialog(new Stage());
-            System.out.println(this.fileOpen.toURI().toString());
         });
         
         adduser.setOnAction((e) -> {
@@ -331,7 +330,7 @@ public class WhatsappInterfaceController implements Initializable {
             }
             
             //add user
-            Usuario newUser = new Usuario(name, tel, status, "");
+            Usuario newUser = new Usuario(name, tel, status, this.fileOpen.toURI().toString());
             
             this.contatos.adicionarUsuario(newUser);
             //Reload Contact List
