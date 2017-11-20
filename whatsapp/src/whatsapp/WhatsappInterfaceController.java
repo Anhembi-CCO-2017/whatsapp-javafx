@@ -5,6 +5,7 @@
  */
 package whatsapp;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class WhatsappInterfaceController implements Initializable {
 
@@ -72,6 +74,7 @@ public class WhatsappInterfaceController implements Initializable {
     private boolean switchState = false;
     private boolean scrollActiveAction = false; // False = Lista de Conversas, True = Lista de contatos
     private Usuario selfUser;
+    private File fileOpen; // auxiliar data para abrir arquivos.
 
     private StackPane genContactScrollList(Usuario usr, boolean event) {
         GridPane gppConv = new GridPane();
@@ -218,7 +221,7 @@ public class WhatsappInterfaceController implements Initializable {
                 vbxText.setAlignment(Pos.TOP_LEFT);
             }
             
-             vbxText.getChildren().add(gppText);
+            vbxText.getChildren().add(gppText);
             dataText.getChildren().add(vbxText);
         }
         
@@ -260,11 +263,6 @@ public class WhatsappInterfaceController implements Initializable {
         layout.getChildren().clear();
         
         //  Definindo componentes
-        // Labels
-        Label nameLabel = new Label("Nome do Contato:");
-        Label telLabel = new Label("Telefone do Contato:");
-        Label statusLabel = new Label("Status do Contato:");
-        Label fotoLabel = new Label("Selecione uma foto para o contato:");     
         //  TextField
         TextField nameTF = new TextField();
         TextField telTF = new TextField();
@@ -273,12 +271,38 @@ public class WhatsappInterfaceController implements Initializable {
         nameTF.setMaxWidth(250);
         telTF.setMaxWidth(250);
         statusTF.setMaxWidth(250);
+        
         //  FileChooser
         FileChooser fotoChoose = new FileChooser();
         fotoChoose.setTitle("Selecione uma foto");
         // fotoChoose. (Colocar só .jpg)
-        // Button
         
+        // Button & Grid
+        HBox buttonGrid = new HBox();
+        Button adduser = new Button("Adicionar");
+        Button cancel = new Button("Cancelar");
+        Button fotoOpen = new Button("Selecionar");
+        //Adicionando no grid
+        buttonGrid.getChildren().add(adduser);
+        buttonGrid.getChildren().add(cancel);
+        
+        //Button Events
+        fotoOpen.setOnAction((e) -> {
+            this.fileOpen = fotoChoose.showOpenDialog(new Stage());
+            System.out.println(this.fileOpen.toURI());
+        });
+
+        //Adicionando componentes
+        layout.getChildren().add(new Label("Nome do Contato:"));
+        layout.getChildren().add(nameTF);
+        layout.getChildren().add(new Label("Telefone do Contato:"));
+        layout.getChildren().add(telTF);
+        layout.getChildren().add(new Label("Status do Contato:"));
+        layout.getChildren().add(statusTF);
+        layout.getChildren().add(new Label("Selecione uma foto para o contato:"));
+        layout.getChildren().add(fotoOpen);
+        layout.getChildren().add(new Label("")); //Criando espaco vazio
+        layout.getChildren().add(buttonGrid);
         return;
     }
     
