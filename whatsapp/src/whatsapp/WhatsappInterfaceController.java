@@ -273,7 +273,9 @@ public class WhatsappInterfaceController implements Initializable {
         statusTF.setMaxWidth(250);
         
         //  FileChooser
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image File", "*.jpg");
         FileChooser fotoChoose = new FileChooser();
+        fotoChoose.setSelectedExtensionFilter(imageFilter);
         fotoChoose.setTitle("Selecione uma foto");
         // fotoChoose. (Colocar só .jpg)
         
