@@ -8,6 +8,7 @@ public class Mensagem {
     private String texto;
     private String status;
     private Calendar dataHora;
+    private int statusIndex;
 
     public Mensagem(Usuario emissor, String texto, Calendar dataHora) {
         this.emissor = emissor;
@@ -23,11 +24,17 @@ public class Mensagem {
         
         if(i>=0 && i<=3)
             this.status=status[i];
+            this.statusIndex = i;
     }
 
     public Usuario getEmissor() {
         return emissor;
     }
+    
+    public int getStatusIndex() {
+        return statusIndex;
+    }
+
 
     public String getEmissorName() {
         return emissor.getNome();
