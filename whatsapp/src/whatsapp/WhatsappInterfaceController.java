@@ -284,6 +284,17 @@ public class WhatsappInterfaceController implements Initializable {
         contatos.setListaUsuarios(outList);
     }
     
+    private void loadConversas(ArrayList<Conversa> conv) {
+        VBox content = new VBox();
+
+        for (int i = 0; i < conv.size(); i++)
+            content.getChildren().add(this.genConversScrolllist(conv.get(i)));
+
+        contactScrollPane.setContent(content);
+    }
+    
+    /* INICIO DO CODIGO DE INJECT DO FXML */
+    
     @FXML
     private void handlerUserSwitch(ActionEvent event) {
         this.switchState = !this.switchState;
@@ -557,51 +568,34 @@ public class WhatsappInterfaceController implements Initializable {
         
         msgScroll.setContent(this.renderConvStructure(activeConv));
     }
-
-    //ESSA FUNCAO SO VAI EXISTIR POR ENQUANTO
-    //DEPOIS QUE EXISTIR A OPCAO DE INICIAR CONVERSA ELA VAI PRO BELELEU
-    private void genConversas() {
-        this.selfUser = new Usuario("Eu", "stackoverflow");
-        Random r = new Random();
-        
-        this.contatos.adicionarUsuario(new Usuario("Carlinhos", "cade 2 segunda chance", "foto8.jpg"));
-        this.contatos.adicionarUsuario(new Usuario("AMulherDosDragao", "cade 2 segunda chance", "foto7.jpg"));
-        
-        for (int i = 1; i < 8; i++) {
-            Usuario user = new Usuario("Carlos"+i, "cade 2 segunda chance");
-            Conversa conv = new Conversa(this.selfUser, user);
-
-            user.setUltimaVezOnline(new Date(System.currentTimeMillis()));
-            user.setImage("foto"+i+".jpg");
-
-            this.contatos.adicionarUsuario(user);
-
-            //  switcher para alterar de quem é a mensagem gerada.
-            boolean swtch = false;
-
-            for(int j = 0; i < r.nextInt(50); j++) {
-                if(swtch)
-                    conv.addMensagem(0, UUID.randomUUID().toString());
-                else
-                    conv.addMensagem(1, UUID.randomUUID().toString());
-
-                swtch = !swtch;
-            }
-
-            conversas.add(conv);
-        }
-        
-        bubbleSortForSortContact();
-    }
-
-    private void loadConversas(ArrayList<Conversa> conv) {
-        VBox content = new VBox();
-
-        for (int i = 0; i < conv.size(); i++)
-            content.getChildren().add(this.genConversScrolllist(conv.get(i)));
-
-        contactScrollPane.setContent(content);
-    }
+    
+    /*
+     *                  _|_
+     *                   |
+     *               .-'''''-.
+     *            .-'    '-.
+     *         .-'  :::::_:::::  '-.
+     *     ___/ ==:...:::-:::...:== \___
+     *    /_____________________________\
+     *  ':'-._________________________.-'_
+     *   ':::\ @-,`-[-][-^-][-]-`,-@ / _| |_
+     *    '::| .-------------------. ||_ @ _|
+     *     ::|=|*                 *|=|'.| |
+     *     ':| |'  jaz aqui nossa '| |::.^|
+     *     _:|=|'  querida função '|=|::::::.
+     *   _| || |'  genConversas() '| |:::::::.
+     *  |_   |=|'16eb5af _ 00f07f2'|=|':::::.
+     *    | ||=|'      _( )_      '|=|':::::.
+     *    | || |' (   (_ ~ _)   ) '| | ':::'
+     *    |^||=|*  )    (_)    (  *|=| '::'
+     *       | '-------------------' .::::'
+     *       |_____________________.::::::'
+     *     .'___________________.::::::''
+     *     |_______________.::::'':::'''
+     *   .'_____________.::::::''::::''
+     *              .:::'''' ... .'::::'
+     *           .:::::''':.   .:::::'
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -623,8 +617,6 @@ public class WhatsappInterfaceController implements Initializable {
         /* Preenchimento de foto default para o topo*/
         topoImage.setFill(new ImagePattern(defaultFoto, 0, 0, 1, 1, true));
 
-        // Carrega Conversas Existentes (Gera enquanto não implementado totalmente novos contatos.)
-        this.genConversas();
         //  Organiza lista de mensagens em relação a hora da msg
         bubbleSortForSortConvers();
         this.loadConversas(this.conversas);
