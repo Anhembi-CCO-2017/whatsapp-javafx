@@ -11,7 +11,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="stage" stylesheets="@../assets/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whatsapp.WhatsappInterfaceController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="stage" stylesheets="@../assets/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whatsapp.FXMLDocumentController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="0.0" prefWidth="34.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="978.0" minWidth="10.0" prefWidth="769.0" />
@@ -41,16 +41,12 @@
                <content>
                   <VBox fx:id="content" alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="426.0" prefWidth="213.0">
                      <children>
-                        <HBox fx:id="searchHBox" prefHeight="37.0" prefWidth="201.0">
+                        <HBox prefHeight="37.0" prefWidth="201.0">
                            <children>
-                              <TextField fx:id="searchField" prefHeight="27.0" prefWidth="210.0" promptText="Search..." />
+                              <Button mnemonicParsing="false" text="..." />
+                              <TextField prefHeight="27.0" prefWidth="210.0" text="PESQUISA" />
                            </children>
                         </HBox>
-                        <ScrollPane fx:id="contactScrollPane" hbarPolicy="NEVER" prefHeight="404.0" prefWidth="213.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                          </content>
-                        </ScrollPane>
                      </children></VBox>
                </content>
                <opaqueInsets>
@@ -80,7 +76,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </TextArea>
-                        <Button fx:id="send" onAction="#handleButtonSendMsg" prefHeight="61.0" prefWidth="120.0" style="-fx-background-size: cover;" styleClass="write__send" wrapText="true" GridPane.columnIndex="2">
+                        <Button fx:id="send" onAction="#handleButtonAction" prefHeight="61.0" prefWidth="120.0" style="-fx-background-size: cover;" styleClass="write__send" wrapText="true" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </GridPane.margin>
@@ -96,7 +92,7 @@
                   </GridPane>
                   <ScrollPane fx:id="msgScroll" hbarPolicy="NEVER" prefHeight="163.0" prefWidth="711.0" styleClass="messages__container" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM">
                      <content>
-                        <VBox fx:id="msgContent" alignment="BOTTOM_LEFT" prefHeight="358.0" prefWidth="543.0" />
+                        <VBox fx:id="msgContent" alignment="BOTTOM_LEFT" prefHeight="357.0" prefWidth="542.0" />
                      </content></ScrollPane>
                </children>
             </GridPane>

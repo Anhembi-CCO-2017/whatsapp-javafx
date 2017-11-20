@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -200,24 +201,29 @@ public class WhatsappInterfaceController implements Initializable {
         for (int i = 0; i < msgs.size(); i++)
         {
             GridPane gppText = new GridPane();
+            VBox vbxText = new VBox();
             Mensagem msg = msgs.get(i);
 
             Text textMsg = new Text(msg.getTexto());
             Text textStatus = new Text(msg.getHora());
+            
+            textMsg.wrappingWidthProperty();
             textStatus.getStyleClass().add("mensagem-hora");
             gppText.add(textMsg, 0, 0);
             gppText.add(textStatus, 0, 1);
 
             gppText.getStyleClass().add("mensagem");
+            
             if(msg.getEmissor().equals(conv.getUser(0))){
                 gppText.getStyleClass().add("mensagem-left");
-                generalGrid.add(gppText, 0, 0);
+                vbxText.setAlignment(Pos.TOP_LEFT);
             }else{
                 gppText.getStyleClass().add("mensagem-right");
-                generalGrid.add(gppText, 0, 1);
+                vbxText.setAlignment(Pos.TOP_RIGHT);
             }
-
-            dataText.getChildren().add(gppText);
+            
+             vbxText.getChildren().add(gppText);
+            dataText.getChildren().add(vbxText);
         }
         
         return dataText;
@@ -354,26 +360,29 @@ public class WhatsappInterfaceController implements Initializable {
         }
 
         GridPane gppText = new GridPane();
+        VBox vbxText = new VBox();
         Mensagem msg = msgs.get(msgs.size()-1);
-
+        vbxText.prefWidthProperty().bind(msgContent.prefWidthProperty());
         Text textMsg = new Text(msg.getTexto());
         Text textStatus = new Text(msg.getHora());
-
         textStatus.getStyleClass().add("mensagem-hora");
         gppText.add(textMsg, 0, 0);
         gppText.add(textStatus, 0, 1);
 
         gppText.getStyleClass().add("mensagem");
+        textMsg.wrappingWidthProperty().bind(gppText.maxWidthProperty());
 
         if(msg.getEmissor().equals(activeConv.getUser(0))){
-            gppText.setHalignment(textStatus, HPos.CENTER);
+            vbxText.setAlignment(Pos.TOP_LEFT);
             gppText.getStyleClass().add("mensagem-left");
         }else{
-            gppText.setHalignment(textStatus, HPos.CENTER);
+            vbxText.setAlignment(Pos.TOP_RIGHT);
             gppText.getStyleClass().add("mensagem-right");
         }
-
-        msgContent.getChildren().add(gppText);
+        textMsg.wrappingWidthProperty();
+        vbxText.getChildren().add(gppText);
+        
+        msgContent.getChildren().add(vbxText);
         msgTextArea.clear();
         
         bubbleSortForSortConvers();
