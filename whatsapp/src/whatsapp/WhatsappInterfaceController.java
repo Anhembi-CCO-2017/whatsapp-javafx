@@ -73,8 +73,7 @@ public class WhatsappInterfaceController implements Initializable {
     private boolean switchState = false;
     private boolean scrollActiveAction = false; // False = Lista de Conversas, True = Lista de contatos
 
-    @FXML
-    private StackPane genScrollList(Usuario usr) {
+    private StackPane genContactScrollList(Usuario usr) {
         GridPane gppConv = new GridPane();
         gppConv.getStyleClass().add("conversa");
 
@@ -101,10 +100,79 @@ public class WhatsappInterfaceController implements Initializable {
 
         StackPane layout = new StackPane();
         layout.getChildren().addAll(gppConv);
-        //layout.setUserData(conversas.get(i));
-        //layout.onMouseClickedProperty().set(this::handleClickContact);
+        
+        layout.setUserData(usr);
+        layout.onMouseClickedProperty().set(this::handleClickContact);
+
+        return layout;  
+    }
+
+    private StackPane genConversScrolllist(Conversa conv) {
+        Usuario usr = conv.getUser(1);
+        
+        GridPane gppConv = new GridPane();
+        gppConv.getStyleClass().add("conversa");
+
+        GridPane gppConvText = new GridPane();
+        gppConvText.getStyleClass().add("conversa-texts");
+
+        /* Nome do usuário dentro de um Text */
+        Text textConvName = new Text(usr.getNome());
+        textConvName.getStyleClass().add("conversa-name");
+
+        /* Ultima mensagem da conversa dentro de um Text */
+        String textDataConvLast;
+
+        if(conv.getListaMensagens().size() > 0)
+            textDataConvLast = conv.retornarMensagemString(conv.getListaMensagens().size() - 1);
+        else
+            textDataConvLast = "";
+
+        Text textConvLast = new Text(""+textDataConvLast);
+        textConvLast.getStyleClass().add("conversa-last");
+
+
+        /* Pegando a imagem e colocando dentro de um circulo*/
+        Circle foto = new Circle(40, 40, 20, Color.BLUE);
+        foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
+
+        gppConvText.add(textConvName, 1, 0);
+        gppConvText.add(textConvLast, 1, 1);
+
+        gppConv.add(gppConvText, 1, 0);
+        gppConv.add(foto, 0, 0);
+
+
+        StackPane layout = new StackPane();
+        layout.getChildren().addAll(gppConv);
+        layout.setUserData(conv);
+        layout.onMouseClickedProperty().set(this::handleClickConv);
 
         return layout;
+    }
+    
+    //  Renderiza lista de contatos
+    private void renderContactsList(ArrayList<Usuario> data) {
+        VBox content = new VBox();
+
+        VBox scrollContactContent = new VBox();
+
+        //Define como cancelar botão de janela
+        buttonAddConv.setText("Cancelar");
+
+        //Gambiarra para criar o novo contato.
+        Usuario newContact = new Usuario("", "Novo contato");
+        newContact.setImage("contact.jpg");
+
+        scrollContactContent.getChildren().add(this.genContactScrollList(newContact));
+
+        // Monta lista de usuarios
+        for (int i = 0; i < data.size(); i++)
+            scrollContactContent.getChildren().add(this.genContactScrollList(data.get(i)));
+
+        content.getChildren().add(scrollContactContent);
+
+        contactScrollPane.setContent(content);
     }
 
     @FXML
@@ -156,7 +224,6 @@ public class WhatsappInterfaceController implements Initializable {
 
     @FXML
     private void handlerButtonOpenContacts(ActionEvent event) {
-
         //  Faz com que o botão de adicionar conversa vire de cancelar e voltar.
         if(scrollActiveAction) {
             scrollActiveAction = !scrollActiveAction;
@@ -166,34 +233,9 @@ public class WhatsappInterfaceController implements Initializable {
             return;
         } else scrollActiveAction = !scrollActiveAction;
         
+        //  Renderiza Lista de Contatos
         this.renderContactsList(contatos.getArrayListUsers());
-
     }
-    
-    //  Renderiza lista de contatos
-    private void renderContactsList(ArrayList<Usuario> data) {
-        VBox content = new VBox();
-
-        VBox scrollContactContent = new VBox();
-
-        //Define como cancelar botão de janela
-        buttonAddConv.setText("Cancelar");
-
-        //Gambiarra para criar o novo contato.
-        Usuario newContact = new Usuario("", "Novo contato");
-        newContact.setImage("contact.jpg");
-
-        scrollContactContent.getChildren().add(this.genScrollList(newContact));
-
-        // Monta lista de usuarios
-        for (int i = 0; i < data.size(); i++)
-            scrollContactContent.getChildren().add(this.genScrollList(data.get(i)));
-
-        content.getChildren().add(scrollContactContent);
-
-        contactScrollPane.setContent(content);
-    }
-
 
     /*Acão do botão para Enviar msg */
     @FXML
@@ -235,11 +277,18 @@ public class WhatsappInterfaceController implements Initializable {
         msgTextArea.clear();
     }
 
-    /*  Acão do botão quando o contato é clicado.
+    @FXML
+    private void handleClickContact(MouseEvent event) {
+        //  Verifica se já existe conversa iniciada com contato, se sim renderiza conversa.
+        event.
+        // Caso não, inicia conversa.
+    }
+
+    /*  Acão do botão quando o Conversa é clicada.
             Insere todas as mensagens da conversa no container de mensagens
     */
     @FXML
-    private void handleClickContact(MouseEvent event) {
+    private void handleClickConv(MouseEvent event) {
         /* slecionando o conyainer de conteúdo*/
         StackPane content = (StackPane) event.getSource();
 
@@ -320,49 +369,7 @@ public class WhatsappInterfaceController implements Initializable {
         VBox content = new VBox();
 
         for (int i = 0; i < conv.size(); i++)
-        {
-            Usuario usr = conv.get(i).getUser(1);
-
-            GridPane gppConv = new GridPane();
-            gppConv.getStyleClass().add("conversa");
-
-            GridPane gppConvText = new GridPane();
-            gppConvText.getStyleClass().add("conversa-texts");
-
-            /* Nome do usuário dentro de um Text */
-            Text textConvName = new Text(usr.getNome());
-            textConvName.getStyleClass().add("conversa-name");
-
-            /* Ultima mensagem da conversa dentro de um Text */
-            String textDataConvLast;
-
-            if(conv.get(i).getListaMensagens().size() > 0)
-                textDataConvLast = conv.get(i).retornarMensagemString(conv.get(i).getListaMensagens().size() - 1);
-            else
-                textDataConvLast = "";
-
-            Text textConvLast = new Text(""+textDataConvLast);
-            textConvLast.getStyleClass().add("conversa-last");
-
-
-            /* Pegando a imagem e colocando dentro de um circulo*/
-            Circle foto = new Circle(40, 40, 20, Color.BLUE);
-            foto.setFill(new ImagePattern(usr.getImage(), 0, 0, 1, 1, true));
-
-            gppConvText.add(textConvName, 1, 0);
-            gppConvText.add(textConvLast, 1, 1);
-
-            gppConv.add(gppConvText, 1, 0);
-            gppConv.add(foto, 0, 0);
-
-
-            StackPane layout = new StackPane();
-            layout.getChildren().addAll(gppConv);
-            layout.setUserData(conv.get(i));
-            layout.onMouseClickedProperty().set(this::handleClickContact);
-
-            content.getChildren().add(layout);
-        }
+            content.getChildren().add(this.genConversScrolllist(conv.get(i)));
 
         contactScrollPane.setContent(content);
     }
