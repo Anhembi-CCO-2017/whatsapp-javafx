@@ -1,5 +1,8 @@
 package whatsapp;
+
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javafx.scene.image.Image;
 
 public class Usuario {
@@ -8,15 +11,7 @@ public class Usuario {
     private String status;
     private String telefone;
     private Image image;
-    private DateFormat ultimavezonline = DateFormat.getDateTimeInstance();
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+    private Date ultimavezonline = new Date();
 
     public Usuario(String telefone) {
         this.telefone = telefone;
@@ -31,14 +26,6 @@ public class Usuario {
         return nome;
     }
     
-    public void setImage(String image) {
-        this.image = new Image(getClass().getResourceAsStream(image));
-    }
-    
-    public Image getImage() {
-        return image;
-    }
-    
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -51,16 +38,36 @@ public class Usuario {
         this.status = status;
     }
 
-    public DateFormat getUltimavezonline() {
-        return ultimavezonline;
+    public void setImage(String image) {
+        this.image = new Image(getClass().getResourceAsStream(image));
     }
     
-    public DateFormat getFormatedLastOnline() {
-        return ultimavezonline;
+    public Image getImage() {
+        return image;
     }
 
-    public void setUltimavezonline(DateFormat ultimavezonline) {
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setUltimaVezOnline(Date ultimavezonline) {
+        
         this.ultimavezonline = ultimavezonline;
+    }
+
+    public String getUltimaVezOnline() {
+        
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        return dateFormat.format(ultimavezonline);
+    }
+    
+    public Date getDateObject(){
+    
+        return this.ultimavezonline;
     }
     
     @Override
