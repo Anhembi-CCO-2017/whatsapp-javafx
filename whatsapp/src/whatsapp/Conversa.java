@@ -35,10 +35,10 @@ public class Conversa {
     public ArrayList<Mensagem> buscarMensagem(String busca){
         ArrayList<Mensagem>returnData = new ArrayList<>();
         
-        String[] buscaData = busca.split(" ");
+        String[] buscaData = busca.toLowerCase().split(" ");
         
         for (Mensagem msg : listaMensagens) {
-            String[] msgData = msg.getTexto().split(" ");
+            String[] msgData = msg.getTexto().toLowerCase().split(" ");
             
             if(searchWords(msgData, buscaData))
                 returnData.add(msg);
