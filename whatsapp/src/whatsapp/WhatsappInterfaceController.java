@@ -36,7 +36,7 @@ import javafx.scene.paint.ImagePattern;
  *
  * @author googs
  */
-public class FXMLDocumentController implements Initializable {
+public class WhatsappInterfaceController implements Initializable {
     
     @FXML
     private Button send;

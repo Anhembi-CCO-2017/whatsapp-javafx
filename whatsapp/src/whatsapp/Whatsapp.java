@@ -11,7 +11,7 @@ public class Whatsapp extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader layout = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));  
+        FXMLLoader layout = new FXMLLoader(getClass().getResource("WhatsappInterface.fxml"));  
 
         Scene scene = new Scene(layout.load());
         stage.setScene(scene);
