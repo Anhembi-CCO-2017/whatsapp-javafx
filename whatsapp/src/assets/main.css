@@ -85,7 +85,6 @@
 .mensagem{
     -fx-background-insets: 0 0 -10 0, 0, 1, 2;
     -fx-min-height: 50;
-    -fx-max-height: 200;
     -fx-background-radius: 30px, 30px, 200px, 3px;
     -fx-max-width: 300;
     -fx-padding: 10;
@@ -116,9 +115,4 @@
 
 .mensagem-container{
     -fx-padding: 10;
-}
-
-.add-conversa{
-	-fx-background-color: #158c7d;
-	-fx-border-radius:100;
 }

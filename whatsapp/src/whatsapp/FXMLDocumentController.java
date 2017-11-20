@@ -19,33 +19,43 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
+import javafx.stage.Stage;
 
 /**
  *
- * @author Lucas Golino, Thiago Almeida, Gabriel HD e Gabriel Foster
+ * @author googs
  */
 public class FXMLDocumentController implements Initializable {
     
     @FXML
-    private Button send;    
+    private Button send;
     @FXML
     private TextArea msgTextArea;
     @FXML
@@ -65,15 +75,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button buttonAddConv;
     @FXML
-    private Button conversabtn;
+    private Label labelStatus;
     
     private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
     private Conversa activeConv;
     private boolean switchState = false;
     
-    
-    /* comantario o que essa função faz*/
     @FXML
     private StackPane genScrollList(Usuario usr) {
         GridPane gppConv = new GridPane();
@@ -113,12 +121,11 @@ public class FXMLDocumentController implements Initializable {
         this.switchState = !this.switchState;
     }
     
-    
-     /* Adicionando novo contato */
     @FXML
     private void handlerButtonAddConv(ActionEvent event) {
         
         VBox content = this.content;
+
         GridPane upSide = new GridPane();
         upSide.add(new Text("\t"), 0, 0);
         upSide.add(new Text("New Chat\t     "), 1, 0);
@@ -181,8 +188,10 @@ public class FXMLDocumentController implements Initializable {
         gppText.getStyleClass().add("mensagem");
             
         if(msg.getEmissor().equals(activeConv.getUser(0))){
+            gppText.setHalignment(textStatus, HPos.CENTER);
             gppText.getStyleClass().add("mensagem-left");
         }else{
+            gppText.setHalignment(textStatus, HPos.CENTER);
             gppText.getStyleClass().add("mensagem-right");
         }
         
@@ -191,7 +200,9 @@ public class FXMLDocumentController implements Initializable {
     }
     
     
-    /* Selecionar uma conversa */
+    /*  Acão do botão quando o contato é clicado.
+            Insere todas as mensagens da conversa no container de mensagens
+    */
     @FXML
     private void handleClickContact(MouseEvent event) {
         /* slecionando o conyainer de conteúdo*/ 
@@ -203,25 +214,19 @@ public class FXMLDocumentController implements Initializable {
         /* Arraylist com todas as mensagens */
         ArrayList<Mensagem> msgs = activeConv.getListaMensagens();
 
-        /* Seleciona a conversa atual, limpando e colocando o usuario atual */
+        
         VBox dataText = msgContent;
         dataText.getChildren().clear();
         dataText.setUserData(activeConv);
         
-        /* Muda imagem e nome na conversa ativa */
+        /* mudar imagem e nome na conversa ativa*/
         topoNome.setText(activeConv.getUser(1).getNome());
         topoImage.setFill(new ImagePattern(activeConv.getUser(1).getImage(), 0, 0, 1, 1, true));
         
-        /* criando acumulador de mensagen*/
         GridPane generalGrid = new GridPane();
-        
-        /* Loop para criar mensagens */
         for (int i = 0; i < msgs.size(); i++)
         {
             GridPane gppText = new GridPane();
-            VBox vbxText = new VBox();
-            vbxText.getStyleClass().add("teste");
-            
             Mensagem msg = msgs.get(i);
             
             Text textMsg = new Text(msg.getTexto());
@@ -233,17 +238,13 @@ public class FXMLDocumentController implements Initializable {
             gppText.getStyleClass().add("mensagem");
             if(msg.getEmissor().equals(activeConv.getUser(0))){
                 gppText.getStyleClass().add("mensagem-left");
-                vbxText.setAlignment(Pos.TOP_LEFT);
                 generalGrid.add(gppText, 0, 0);
             }else{
-                vbxText.setAlignment(Pos.TOP_RIGHT);
                 gppText.getStyleClass().add("mensagem-right");
                 generalGrid.add(gppText, 0, 1);
             }
             
-            vbxText.getChildren().add(gppText);
-            dataText.getChildren().add(vbxText);
-            
+            dataText.getChildren().add(gppText);
 
         }
 
@@ -275,8 +276,7 @@ public class FXMLDocumentController implements Initializable {
             conversas.add(conv);
         }
     }
-        
-    /* carregar todas as conversas*/
+    
     private void loadConversas() {
         this.genConversas();
         
@@ -335,12 +335,12 @@ public class FXMLDocumentController implements Initializable {
         contactScroll.setContent(content);
     }
     
-    /* iniciando a aplicação*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         userSwitch.setOnAction(this::handlerUserSwitch);
         send.setOnAction(this::handleButtonAction);
         buttonAddConv.setOnAction(this::handlerButtonAddConv);
+
         this.loadConversas();
     }
    
