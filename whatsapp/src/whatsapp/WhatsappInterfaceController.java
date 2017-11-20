@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.Calendar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -221,6 +222,27 @@ public class WhatsappInterfaceController implements Initializable {
         return dataText;
     }
 
+    private void bubbleSortForSortConvers() {
+        int size = conversas.size();
+
+        Conversa auxiliar;
+
+        for (int i = 0; i < size; i++)
+            for(int j=0; j < size-1; j++) {
+                Calendar firstCalendar = conversas.get(j).retornaUltimaMensagem().getDataHora();
+                Calendar nextCalendar = conversas.get(j+1).retornaUltimaMensagem().getDataHora();
+                
+                if(firstCalendar.compareTo(nextCalendar) < 0) {
+                    auxiliar = conversas.get(j);
+                    conversas.set(j, conversas.get(j+1));
+                    conversas.set(j+1, auxiliar);
+                }
+            }
+        
+        // Reload no frame de conversas apos a re-ordem.
+        this.loadConversas(this.conversas);
+    }
+
     @FXML
     private void handlerUserSwitch(ActionEvent event) {
         this.switchState = !this.switchState;
@@ -326,6 +348,8 @@ public class WhatsappInterfaceController implements Initializable {
 
         msgContent.getChildren().add(gppText);
         msgTextArea.clear();
+        
+        bubbleSortForSortConvers();
     }
 
     @FXML
@@ -344,10 +368,10 @@ public class WhatsappInterfaceController implements Initializable {
                 return;
             }
         
-        // Caso não, inicia conversa. E renderiza.
-        conversas.add(new Conversa(this.selfUser, (Usuario) DOM.getUserData()));
-        activeConv = conversas.get(conversas.size() - 1);
-        msgScroll.setContent(this.renderConvStructure(conversas.get(conversas.size() - 1)));
+        // Caso não, inicia conversa no ponto 0 para abrir no topo da lista de conversas. E renderiza.
+        conversas.add(0, new Conversa(this.selfUser, (Usuario) DOM.getUserData()));
+        activeConv = conversas.get(0);
+        msgScroll.setContent(this.renderConvStructure(conversas.get(0)));
         
         // Reseta janela lateral para lista de conversas
         this.handlerButtonOpenContacts(new ActionEvent()); //Inicia o evento para alterar e renderizar o correto.
@@ -433,6 +457,8 @@ public class WhatsappInterfaceController implements Initializable {
 
         // Carrega Conversas Existentes (Gera enquanto não implementado totalmente novos contatos.)
         this.genConversas();
+        //  Organiza lista de mensagens em relação a hora da msg
+        bubbleSortForSortConvers();
         this.loadConversas(this.conversas);
     }
 

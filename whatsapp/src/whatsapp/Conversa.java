@@ -60,6 +60,17 @@ public class Conversa {
         return listaMensagens.get(index);
     }
     
+    public Mensagem retornaUltimaMensagem(){
+        if(listaMensagens.size() == 0) {
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date(1, 1, 1));
+
+            return new Mensagem(user.get(0), "", calendar);
+        }
+        
+        return listaMensagens.get(listaMensagens.size() - 1);
+    }
+    
     public String retornarMensagemString(int index){
         return listaMensagens.get(index).getTexto();
     }
