@@ -513,7 +513,6 @@ public class WhatsappInterfaceController implements Initializable {
             TimerTask changeStatus = new TimerTask() {
                 public void run() {
                     //The task you want to do       
-                    System.out.println(msg.getStatus());
                     textStats.setText(msg.getStatus());
                     msg.setStatus(msg.getStatusIndex() + 1);
 
@@ -626,5 +625,11 @@ public class WhatsappInterfaceController implements Initializable {
         this.loadConversas(this.conversas);
     }
     
-
+    public void setContacts(Contatos cont) {
+        this.contatos = cont;
+    }
+    
+    public Contatos getContacts() {
+        return this.contatos;
+    }
 }

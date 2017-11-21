@@ -16,10 +16,8 @@ public class Contatos implements Serializable {
         Contatos.listaUsuarios = listaUsuarios;
     }
     
-    public void adicionarUsuario(Usuario usuario){
-    
+    public void adicionarUsuario(Usuario usuario) {
         listaUsuarios.add(usuario);
-        
     }
     
     public ArrayList<Usuario> getArrayListUsers() {
@@ -27,11 +25,9 @@ public class Contatos implements Serializable {
     }
     
     public String listarUsuario(){
-    
         String saida = "";
-        
+
         for (Usuario usuario: listaUsuarios) {
-            
             saida += usuario.toString()+"\n";
         }
         

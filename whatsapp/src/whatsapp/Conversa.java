@@ -1,11 +1,12 @@
 package whatsapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class Conversa {
+public class Conversa implements Serializable {
     
     // primeiro usuario SEMPRE definido como "VOCE"
     private ArrayList<Usuario> user = new ArrayList<>();
