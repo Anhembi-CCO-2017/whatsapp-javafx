@@ -496,7 +496,9 @@ public class WhatsappInterfaceController implements Initializable {
         }
         
         msgContent.getChildren().clear();
-        msgScroll.setContent(this.renderConvStructure(activeConv));
+        VBox struct = this.renderConvStructure(activeConv);
+        msgScroll.setContent(struct);
+        msgScroll.vvalueProperty().bind(struct.heightProperty());
         msgTextArea.clear();
         
         bubbleSortForSortConvers();
@@ -536,7 +538,9 @@ public class WhatsappInterfaceController implements Initializable {
         /* selecionando informacoes da conversa e coloca como coversa atual*/
         activeConv = (Conversa) content.getUserData();
         
-        msgScroll.setContent(this.renderConvStructure(activeConv));
+        VBox struct = this.renderConvStructure(activeConv);
+        msgScroll.setContent(struct);
+        msgScroll.vvalueProperty().bind(struct.heightProperty());
     }
     
     /*
