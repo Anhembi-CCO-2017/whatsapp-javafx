@@ -93,7 +93,7 @@ public class WhatsappInterfaceController implements Initializable {
         textConvName.getStyleClass().add("conversa-name");
 
         /* Status do contato dentro de um Text */
-        Text textConvLast = new Text(usr.getStatus());
+        Label textConvLast = new Label(usr.getStatus());
         textConvLast.getStyleClass().add("conversa-last");
 
         /* Pegando a imagem e colocando dentro de um circulo*/
@@ -218,11 +218,13 @@ public class WhatsappInterfaceController implements Initializable {
 
             Text textMsg = new Text(msg.getTexto());
             Text textStatus = new Text(msg.getHora());
+            Text textStats = new Text(msg.getStatus());
             
             textMsg.wrappingWidthProperty();
             textStatus.getStyleClass().add("mensagem-hora");
             gppText.add(textMsg, 0, 0);
             gppText.add(textStatus, 0, 1);
+            gppText.add(textStats, 1, 1);
 
             gppText.getStyleClass().add("mensagem");
             
@@ -233,6 +235,7 @@ public class WhatsappInterfaceController implements Initializable {
                 gppText.getStyleClass().add("mensagem-left");
                 vbxText.setAlignment(Pos.TOP_LEFT);
             }
+            
             
             vbxText.getChildren().add(gppText);
             dataText.getChildren().add(vbxText);
@@ -293,8 +296,7 @@ public class WhatsappInterfaceController implements Initializable {
         contactScrollPane.setContent(content);
     }
     
-    /* INICIO DO CODIGO DE INJECT DO FXML */
-    
+    // INICIO DO CODIGO DE INJECT DO FXML
     @FXML
     private void handlerUserSwitch(ActionEvent event) {
         this.switchState = !this.switchState;
@@ -368,18 +370,16 @@ public class WhatsappInterfaceController implements Initializable {
             } else if(status.isEmpty()) {
                 statusTF.setStyle("-fx-background-color: firebrick;");
                 return;                    
-            } else if(this.fileOpen != null) {
-                if(!this.fileOpen.isFile()) {
-                    fotoOpen.setStyle("-fx-background-color: firebrick;");
-                    return;
-                }
-            } else if(this.fileOpen == null) {
-                fotoOpen.setStyle("-fx-background-color: firebrick;");
-                return;
             }
             
             //add user
-            Usuario newUser = new Usuario(name, tel, status, this.fileOpen.toURI().toString());
+            Usuario newUser;
+            
+            if(this.fileOpen == null)
+                newUser = new Usuario(name, tel, status, "");
+            else
+                newUser = new Usuario(name, tel, status, this.fileOpen.toURI().toString());
+            
             this.contatos.adicionarUsuario(newUser);
             //Reordena e Reload Contact List
             bubbleSortForSortContact();
@@ -463,7 +463,7 @@ public class WhatsappInterfaceController implements Initializable {
         this.renderContactsList(contatos.getArrayListUsers());
     }
 
-    /*Acão do botão para Enviar msg */
+    // Acão do botão para Enviar msg
     @FXML
     private void handleButtonSendMsg(ActionEvent event) {
         if(msgTextArea.getText().equals(""))
@@ -478,53 +478,24 @@ public class WhatsappInterfaceController implements Initializable {
             activeConv.getUser(1).setUltimaVezOnline(new Date(System.currentTimeMillis()));
             labelStatus.setText(activeConv.getUser(1).getUltimaVezOnline());
         }
-
-        GridPane gppText = new GridPane();
-        VBox vbxText = new VBox();
-        Mensagem msg = msgs.get(msgs.size()-1);
-        vbxText.prefWidthProperty().bind(msgContent.prefWidthProperty());
-        Text textMsg = new Text(msg.getTexto());
-        Text textStatus = new Text(msg.getHora());
-        Text textStats = new Text(msg.getStatus()); 
-        
-        textStatus.getStyleClass().add("mensagem-hora");
-        gppText.add(textMsg, 0, 0);
-        gppText.add(textStatus, 0, 1);
-        gppText.add(textStats, 1, 1);
-
-        gppText.getStyleClass().add("mensagem");
-        textMsg.wrappingWidthProperty().bind(gppText.maxWidthProperty());
-
-        if(msg.getEmissor().equals(activeConv.getUser(0))){
-            vbxText.setAlignment(Pos.TOP_RIGHT);
-            gppText.getStyleClass().add("mensagem-right");
-        }else{
-            vbxText.setAlignment(Pos.TOP_LEFT);
-            gppText.getStyleClass().add("mensagem-left");
-        }
-
-        textMsg.wrappingWidthProperty();
-        vbxText.getChildren().add(gppText);
-        
         
         for (int i = 0; i <= 4; i++) {
             Timer timer = new Timer();
-
+            Mensagem refMsg = activeConv.retornaUltimaMensagem();
             TimerTask changeStatus = new TimerTask() {
                 public void run() {
                     //The task you want to do       
-                    textStats.setText(msg.getStatus());
-                    msg.setStatus(msg.getStatusIndex() + 1);
-
+                    refMsg.setStatus(refMsg.getStatusIndex() + 1);
                 }
             };
             
-            int tim = 500*i;
+            int tim = 500 * i;
             
             timer.schedule(changeStatus,tim);
         }
         
-        msgContent.getChildren().add(vbxText);
+        msgContent.getChildren().clear();
+        msgScroll.setContent(this.renderConvStructure(activeConv));
         msgTextArea.clear();
         
         bubbleSortForSortConvers();
@@ -555,9 +526,7 @@ public class WhatsappInterfaceController implements Initializable {
         this.handlerButtonOpenContacts(new ActionEvent()); //Inicia o evento para alterar e renderizar o correto.
     }
 
-    /*  Acão do botão quando o Conversa é clicada.
-            Insere todas as mensagens da conversa no container de mensagens
-    */
+    //  Acão do botão quando o Conversa é clicada. Insere todas as mensagens da conversa no container de mensagens
     @FXML
     private void handleClickConv(MouseEvent event) {
         /* slecionando o conyainer de conteúdo*/
