@@ -99,10 +99,10 @@ public class Database {
             
             for (int i = 0; i < conv.getListaMensagens().size(); i++) {
                 Mensagem m = conv.getListaMensagens().get(i);
-                int emissor = 0;
+                int emissor;
                 
-                if (m.getEmissor().hashCode() == conv.getUser(1).hashCode())
-                    emissor = 1;
+                if (m.getEmissor().equals(this.mySelf)) emissor = 0;
+                else emissor = 1;
                 
                 this.queryMsg(index+1, m.getTexto(), m.getStatusIndex(), new Date(m.getData().getTime()), emissor);
             }
@@ -186,17 +186,6 @@ public class Database {
         return this.conversas;
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public static void createDatabase() {
         String url = "jdbc:sqlite:./database.db";
         File f = new File("database.db");
@@ -206,8 +195,8 @@ public class Database {
                 if (conn != null) {
                     DatabaseMetaData meta = conn.getMetaData();
                     Database.createDefaultTables(conn);
-                    System.out.println("The driver name is " + meta.getDriverName());
-                    System.out.println("A new database has been created.");
+                    System.out.println("Driver SQLite carregado: " + meta.getDriverName());
+                    System.out.println("Nova database foi criada..");
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -217,6 +206,7 @@ public class Database {
 
     public static void truncateTables(Connection conn) {
         try(Statement stmt = conn.createStatement()) {
+            System.out.println("Truncate Databases");
             stmt.execute("DELETE FROM mensagem;");
             stmt.execute("DELETE FROM conversas;");
             stmt.execute("DELETE FROM usuario;");
@@ -247,11 +237,12 @@ public class Database {
                             "conv integer," +
                             "emissor integer" +
                         ");";
-
+        
         try(Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
             stmt.execute(sql2);
             stmt.execute(sql3);
+            System.out.println("Database criada e inciada.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

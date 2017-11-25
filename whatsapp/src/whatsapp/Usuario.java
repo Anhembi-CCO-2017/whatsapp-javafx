@@ -36,7 +36,7 @@ public class Usuario {
         this.nome = nome;   
         this.status = status;
         this.imgURL = image;
-        if(!image.isEmpty()) this.image = new Image(getClass().getResourceAsStream(image));
+        if(!image.isEmpty()) this.image = new Image(image);
         this.telefone = telefone;
     }
 
