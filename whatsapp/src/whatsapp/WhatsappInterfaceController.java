@@ -245,6 +245,7 @@ public class WhatsappInterfaceController implements Initializable {
     }
 
     private void bubbleSortForSortConvers() {
+        
         int size = conversas.size();
 
         Conversa auxiliar;
@@ -604,5 +605,13 @@ public class WhatsappInterfaceController implements Initializable {
     
     public Contatos getContacts() {
         return this.contatos;
+    }
+    
+    public ArrayList<Conversa> getConversas() {
+        return this.conversas;
+    }
+    
+    public void setMySelf(Usuario user) {
+        this.selfUser = user;
     }
 }

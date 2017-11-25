@@ -10,13 +10,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.GregorianCalendar;
 
 public class Database {
     private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
     private Connection conn;
+    public Usuario mySelf = new Usuario("me", "to bem");
     
     public Database() {
         Database.createDatabase();
@@ -41,8 +42,93 @@ public class Database {
         return conn;
     }
     
+    public void save(Contatos cnt, ArrayList<Conversa> cnv) {
+        Database.truncateTables(this.conn);
+        this.contatos = cnt;
+        this.conversas = cnv;
+        
+        this.saveUsers();
+        this.saveConv();
+    }
+    
+    private void saveUsers() {
+        ArrayList<Usuario> users = this.contatos.getArrayListUsers();
+        for (int i = 0; i < users.size(); i++) {
+            Usuario alvo = users.get(i);
+            
+            this.queryUser(alvo.getNome(), alvo.getStatus(), alvo.getTelefone(), alvo.getImageURL(), alvo.getUltimaVezOnlineObject().getTime());
+        }
+    }
+    
+    private void queryUser(String nome, String status, String telefone, String img, long lastTime) {
+        String sql = "INSERT INTO usuario(nome, status, telefone, img, lasttime) VALUES(?,?,?,?,?)";
+ 
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nome);
+            pstmt.setString(2, status);
+            pstmt.setString(3, telefone);
+            pstmt.setString(4, img);            
+            pstmt.setDate(5, new Date(lastTime));
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void saveConv() {
+        for (int i = 0; i < this.conversas.size(); i++) {
+            Conversa conv = this.conversas.get(i);
+            this.queryConv(i, conv);
+        }
+    }
+    
+    private void queryConv(int index, Conversa conv) {
+        String sql = "INSERT INTO conversas(usuario) VALUES(?)";
+ 
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            for (int i = 0; i < this.contatos.getArrayListUsers().size(); i++) {
+                if (conv.getUser(1).equals(this.contatos.getArrayListUsers().get(i))) {
+                    pstmt.setInt(1, i);
+                    break;
+                }
+            }
+
+            pstmt.executeUpdate();
+            
+            for (int i = 0; i < conv.getListaMensagens().size(); i++) {
+                Mensagem m = conv.getListaMensagens().get(i);
+                int emissor = 0;
+                
+                if (m.getEmissor().hashCode() == conv.getUser(1).hashCode())
+                    emissor = 1;
+                
+                this.queryMsg(index+1, m.getTexto(), m.getStatusIndex(), new Date(m.getData().getTime()), emissor);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void queryMsg(int convID, String texto, int status, Date data, int emissor) {
+        String sql = "INSERT INTO mensagem(texto, status, data, conv, emissor) VALUES(?,?,?,?,?)";
+ 
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, texto);
+            pstmt.setInt(2, status);
+            pstmt.setDate(3, data);
+            pstmt.setInt(4, convID);     
+            pstmt.setInt(5, emissor);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
     private void loadUsers() {
-        String sql = "SELECT id, nome, status, telefone, img, lasttime FROM usuario";
+        String sql = "SELECT id, nome, status, telefone, img, lasttime FROM usuario ORDER BY id ASC";
         
         try(Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
             while (rs.next()) {
@@ -54,15 +140,14 @@ public class Database {
     }
     
     private void loadConv() {
-        String sql = "SELECT id, usuario FROM conversas";
-        Usuario mySelf = new Usuario("me", "to bem");
+        String sql = "SELECT id, usuario FROM conversas ORDER BY id ASC";
         
         try(Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
             while (rs.next()) {
                // AQUI CARREGA CONVERSA POR CONVERSA
-               Conversa conv = new Conversa(mySelf, contatos.getUser(rs.getInt("usuario") - 1));
+               Conversa conv = new Conversa(mySelf, contatos.getUser(rs.getInt("usuario")));
                
-               String getMsgSQL = "SELECT id, texto, status, data, emissor FROM mensagem WHERE conv = ?";
+               String getMsgSQL = "SELECT id, texto, status, data, emissor FROM mensagem WHERE conv = ? ORDER BY id ASC";
                
                try(Statement stmt2 = conn.createStatement(); PreparedStatement pstmt = conn.prepareStatement(getMsgSQL)) {
                     pstmt.setInt(1, rs.getInt("id"));
@@ -77,7 +162,7 @@ public class Database {
                         if (msg.getInt("emissor") == 0) {
                             emissor = mySelf; 
                         } else {
-                            emissor = contatos.getUser(rs.getInt("id") - 1);
+                            emissor = contatos.getUser(rs.getInt("id"));
                         }
 
                         conv.addMensagem(new Mensagem(emissor, msg.getString("texto"), calendar, msg.getInt("status")));
@@ -132,7 +217,10 @@ public class Database {
 
     public static void truncateTables(Connection conn) {
         try(Statement stmt = conn.createStatement()) {
-            stmt.execute("TRUNCATE TABLE mensagem; TRUNCATE TABLE conversas; TRUNCATE TABLE usuario;");
+            stmt.execute("DELETE FROM mensagem;");
+            stmt.execute("DELETE FROM conversas;");
+            stmt.execute("DELETE FROM usuario;");
+            stmt.execute("DELETE FROM sqlite_sequence;");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

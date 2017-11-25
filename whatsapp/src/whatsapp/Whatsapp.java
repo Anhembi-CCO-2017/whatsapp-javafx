@@ -34,7 +34,13 @@ public class Whatsapp extends Application {
         WhatsappInterfaceController controller = layout.<WhatsappInterfaceController>getController();
         controller.setContacts(cont);
         controller.setConversas(conv);
+        controller.setMySelf(db.mySelf);
         
+        stage.setOnHiding( event -> {
+            //Contatos c, ArrayList<Conversas> cc
+            db.save(controller.getContacts(), controller.getConversas());
+            System.exit(0);
+        });
         stage.show();
     }
 

@@ -13,6 +13,7 @@ public class Usuario {
     private String status;
     private String telefone;
     private Image image;
+    private String imgURL;
     private Date ultimavezonline = new Date();
 
     public Usuario(String telefone) {
@@ -27,12 +28,14 @@ public class Usuario {
     public Usuario(String nome, String status, String image) {
         this.nome = nome;
         this.status = status;
+        this.imgURL = image;
         this.image = new Image(getClass().getResourceAsStream(image));
     }
     
     public Usuario(String nome, String status, String telefone, String image) {
         this.nome = nome;   
         this.status = status;
+        this.imgURL = image;
         if(!image.isEmpty()) this.image = new Image(getClass().getResourceAsStream(image));
         this.telefone = telefone;
     }
@@ -60,6 +63,10 @@ public class Usuario {
     public Image getImage() {
         return image;
     }
+    
+    public String getImageURL() {
+        return imgURL;
+    }
 
     public String getTelefone() {
         return telefone;
@@ -78,6 +85,10 @@ public class Usuario {
         
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         return dateFormat.format(ultimavezonline);
+    }
+    
+    public Date getUltimaVezOnlineObject() {
+        return ultimavezonline;
     }
     
     public Date getDateObject(){

@@ -1,6 +1,7 @@
 package whatsapp;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Mensagem {
 
@@ -28,9 +29,10 @@ public class Mensagem {
         String status[] = {"Está sendo enviada","foi enviada",
             "Foi recebida","foi lida"};
 
-        if(i>=0 && i<=3)
+        if(i>=0 && i<=3) {
             this.status=status[i];
             this.statusIndex = i;
+        }
     }
 
     public Usuario getEmissor() {
@@ -56,6 +58,10 @@ public class Mensagem {
 
     public Calendar getDataHora() {
         return dataHora;
+    }
+    
+    public Date getData() {
+        return dataHora.getTime();
     }
 
     public String getHora() {
