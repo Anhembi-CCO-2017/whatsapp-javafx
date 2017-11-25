@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class Conversa implements Serializable {
+public class Conversa {
     
     // primeiro usuario SEMPRE definido como "VOCE"
     private ArrayList<Usuario> user = new ArrayList<>();
@@ -25,11 +25,19 @@ public class Conversa implements Serializable {
         return listaMensagens;
     }
     
+    public void setListaMensagens(ArrayList<Mensagem> msg) {
+        this.listaMensagens = msg;
+    }
+    
     public void addMensagem(int userIndex, String mensagem){
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         
         Mensagem msg = new Mensagem(user.get(userIndex), mensagem, calendar);
+        listaMensagens.add(msg);
+    }
+    
+    public void addMensagem(Mensagem msg){
         listaMensagens.add(msg);
     }
     

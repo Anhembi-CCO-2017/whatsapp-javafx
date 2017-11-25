@@ -1,5 +1,7 @@
 package whatsapp;
 
+import com.sun.javafx.fxml.builder.URLBuilder;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +33,7 @@ public class Usuario {
     public Usuario(String nome, String status, String telefone, String image) {
         this.nome = nome;   
         this.status = status;
-        if(!image.isEmpty()) this.image = new Image(image);
+        if(!image.isEmpty()) this.image = new Image(getClass().getResourceAsStream(image));
         this.telefone = telefone;
     }
 

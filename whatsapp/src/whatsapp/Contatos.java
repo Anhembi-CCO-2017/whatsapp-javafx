@@ -4,12 +4,16 @@ package whatsapp;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Contatos implements Serializable {
+public class Contatos {
     
     private static ArrayList<Usuario>listaUsuarios = new ArrayList<>();
 
     public static ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
+    }
+    
+    public Usuario getUser(int i) {
+        return listaUsuarios.get(i);
     }
 
     public static void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {

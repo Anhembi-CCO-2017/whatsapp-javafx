@@ -588,14 +588,18 @@ public class WhatsappInterfaceController implements Initializable {
 
         /* Preenchimento de foto default para o topo*/
         topoImage.setFill(new ImagePattern(defaultFoto, 0, 0, 1, 1, true));
-
-        //  Organiza lista de mensagens em relação a hora da msg
-        bubbleSortForSortConvers();
-        this.loadConversas(this.conversas);
     }
     
     public void setContacts(Contatos cont) {
         this.contatos = cont;
+    }
+    
+    public void setConversas(ArrayList<Conversa> conv) {
+        this.conversas = conv;
+        
+        //  Organiza lista de mensagens em relação a hora da msg
+        bubbleSortForSortConvers();
+        this.loadConversas(this.conversas);
     }
     
     public Contatos getContacts() {
