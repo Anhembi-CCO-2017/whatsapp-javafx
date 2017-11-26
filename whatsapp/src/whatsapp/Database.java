@@ -20,13 +20,20 @@ public class Database {
     public Usuario mySelf = new Usuario("me", "to bem");
     
     public Database() {
+        // Verifica se existe se nao cria a database
         Database.createDatabase();
         
+        // Cria conexão com o arquivo.
         this.conn = this.connect();
+        
+        // Carrega usuarios
         this.loadUsers();
+        
+        // Carrega as conversas
         this.loadConv();
     }
     
+    // Cria conexão com o arquivo.
     private Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:./database.db";
@@ -42,6 +49,7 @@ public class Database {
         return conn;
     }
     
+    // Realiza operação de Save de dados
     public void save(Contatos cnt, ArrayList<Conversa> cnv) {
         Database.truncateTables(this.conn);
         this.contatos = cnt;
@@ -51,6 +59,7 @@ public class Database {
         this.saveConv();
     }
     
+    // Salva usuarios
     private void saveUsers() {
         ArrayList<Usuario> users = this.contatos.getArrayListUsers();
         for (int i = 0; i < users.size(); i++) {
@@ -60,6 +69,7 @@ public class Database {
         }
     }
     
+    // Query dados do usuario para inserir.
     private void queryUser(String nome, String status, String telefone, String img, long lastTime) {
         String sql = "INSERT INTO usuario(nome, status, telefone, img, lasttime) VALUES(?,?,?,?,?)";
  
@@ -76,6 +86,7 @@ public class Database {
         }
     }
     
+    // Salva conversa
     private void saveConv() {
         for (int i = 0; i < this.conversas.size(); i++) {
             Conversa conv = this.conversas.get(i);
@@ -83,6 +94,7 @@ public class Database {
         }
     }
     
+    // Faz o query da consversa, apos criar conversa ele salva as mensagens
     private void queryConv(int index, Conversa conv) {
         String sql = "INSERT INTO conversas(usuario) VALUES(?)";
  
@@ -111,6 +123,7 @@ public class Database {
         }
     }
     
+    // Query dados da mensagem
     private void queryMsg(int convID, String texto, int status, Date data, int emissor) {
         String sql = "INSERT INTO mensagem(texto, status, data, conv, emissor) VALUES(?,?,?,?,?)";
  
@@ -127,6 +140,7 @@ public class Database {
         }
     }
     
+    // Carrega usuarios
     private void loadUsers() {
         String sql = "SELECT id, nome, status, telefone, img, lasttime FROM usuario ORDER BY id ASC";
         
@@ -139,15 +153,16 @@ public class Database {
         }
     }
     
+    // Carrega conversas
     private void loadConv() {
-        String sql = "SELECT id, usuario FROM conversas ORDER BY id ASC";
+        String sql = "SELECT id, usuario FROM conversas ORDER BY id ASC"; // Query para carregar conversas
         
         try(Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
             while (rs.next()) {
                // AQUI CARREGA CONVERSA POR CONVERSA
                Conversa conv = new Conversa(mySelf, contatos.getUser(rs.getInt("usuario")));
                
-               String getMsgSQL = "SELECT id, texto, status, data, emissor FROM mensagem WHERE conv = ? ORDER BY id ASC";
+               String getMsgSQL = "SELECT id, texto, status, data, emissor FROM mensagem WHERE conv = ? ORDER BY id ASC"; // Query para carregar mensagens
                
                try(Statement stmt2 = conn.createStatement(); PreparedStatement pstmt = conn.prepareStatement(getMsgSQL)) {
                     pstmt.setInt(1, rs.getInt("id"));
@@ -158,7 +173,8 @@ public class Database {
                         calendar.setTime(msg.getDate("data"));
                         Usuario emissor;
 
-                        // Usuario que enviou mySelf ou outro
+                        // Usuario que enviou mySelf
+                        // Verificação do emissor da mensagem
                         if (msg.getInt("emissor") == 0) {
                             emissor = mySelf; 
                         } else {
@@ -178,6 +194,8 @@ public class Database {
         }
     }
     
+    
+    // Getters
     public Contatos getContacts() {
         return this.contatos;
     }
@@ -186,6 +204,10 @@ public class Database {
         return this.conversas;
     }
     
+    
+    /* Static functions para Axulio da classe Database */
+    
+    // Verifica se existe arquivo da database, caso não cria.
     public static void createDatabase() {
         String url = "jdbc:sqlite:./database.db";
         File f = new File("database.db");
@@ -203,7 +225,8 @@ public class Database {
             }
         }
     }
-
+    
+    // Truncate tables, limpa todo o banco de dados.
     public static void truncateTables(Connection conn) {
         try(Statement stmt = conn.createStatement()) {
             System.out.println("Truncate Databases");
@@ -215,7 +238,8 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
-
+    
+    // Cria as tabelas defaults quando o banco de dados é criado.
     public static void createDefaultTables(Connection conn) {
         String sql =    "CREATE TABLE usuario (" +
                             "id integer PRIMARY KEY AUTOINCREMENT," +
