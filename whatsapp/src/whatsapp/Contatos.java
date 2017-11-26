@@ -7,7 +7,7 @@ public class Contatos {
     
     private static ArrayList<Usuario>listaUsuarios = new ArrayList<>();
 
-    public static ArrayList<Usuario> getListaUsuarios() {
+    public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
     
@@ -15,7 +15,7 @@ public class Contatos {
         return listaUsuarios.get(i);
     }
 
-    public static void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+    public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
         Contatos.listaUsuarios = listaUsuarios;
     }
     

@@ -12,16 +12,16 @@ public class Conversa {
     private ArrayList<Mensagem>listaMensagens = new ArrayList<>();
     
     public Conversa(Usuario user1, Usuario user2) {
-        user.add(user1);
-        user.add(user2);
+        this.user.add(user1);
+        this.user.add(user2);
     }
     
     public Usuario getUser(int index) {
-        return user.get(index);
+        return this.user.get(index);
     }
 
     public ArrayList<Mensagem> getListaMensagens() {
-        return listaMensagens;
+        return this.listaMensagens;
     }
     
     public void setListaMensagens(ArrayList<Mensagem> msg) {
@@ -32,12 +32,12 @@ public class Conversa {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         
-        Mensagem msg = new Mensagem(user.get(userIndex), mensagem, calendar);
-        listaMensagens.add(msg);
+        Mensagem msg = new Mensagem(this.user.get(userIndex), mensagem, calendar);
+        this.listaMensagens.add(msg);
     }
     
     public void addMensagem(Mensagem msg){
-        listaMensagens.add(msg);
+        this.listaMensagens.add(msg);
     }
     
     public ArrayList<Mensagem> buscarMensagem(String busca){
@@ -45,7 +45,7 @@ public class Conversa {
         
         String[] buscaData = busca.toLowerCase().split(" ");
         
-        for (Mensagem msg : listaMensagens) {
+        for (Mensagem msg : this.listaMensagens) {
             String[] msgData = msg.getTexto().toLowerCase().split(" ");
             
             if(searchWords(msgData, buscaData))
@@ -65,18 +65,18 @@ public class Conversa {
     }
 
     public Mensagem retornarMensagem(int index){
-        return listaMensagens.get(index);
+        return this.listaMensagens.get(index);
     }
     
     public Mensagem retornaUltimaMensagem(){
-        if(listaMensagens.size() == 0) {
+        if(this.listaMensagens.isEmpty()) {
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.setTime(new Date(1, 1, 1));
 
-            return new Mensagem(user.get(0), "", calendar);
+            return new Mensagem(this.user.get(0), "", calendar);
         }
         
-        return listaMensagens.get(listaMensagens.size() - 1);
+        return this.listaMensagens.get(this.listaMensagens.size() - 1);
     }
     
     public String retornarMensagemString(int index){

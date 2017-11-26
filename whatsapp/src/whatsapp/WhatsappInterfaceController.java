@@ -39,7 +39,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class WhatsappInterfaceController implements Initializable {
-
+    
+    // Elementos do UI-JavaFX
     @FXML
     private Button send;
     @FXML
@@ -69,15 +70,16 @@ public class WhatsappInterfaceController implements Initializable {
     @FXML
     private HBox searchHBox;
 
-    private Contatos contatos = new Contatos();
-    private ArrayList<Conversa> conversas = new ArrayList<>();
-    private Conversa activeConv;
-    private boolean switchState = false;
+    private Contatos contatos = new Contatos(); // Contatos cadastrados
+    private ArrayList<Conversa> conversas = new ArrayList<>(); // Conversas existentes
+    private Conversa activeConv; // Conversa ativa no Menssage Box
+    private boolean switchState = false; // Estado do emissor, usuario ou contato.
     private boolean scrollActiveAction = false; // False = Lista de Conversas, True = Lista de contatos
-    private Usuario selfUser;
+    private Usuario selfUser; // Usuario utilizador
     private File fileOpen; // auxiliar data para abrir arquivos.
-    private Image defaultFoto = new Image(getClass().getResourceAsStream("placeholder.png"));
+    private Image defaultFoto = new Image(getClass().getResourceAsStream("placeholder.png")); // Foto padrão
 
+    // Gera ScrollList de contatos
     private StackPane genContactScrollList(Usuario usr, boolean event) {
         GridPane gppConv = new GridPane();
         gppConv.getStyleClass().add("conversa");
@@ -119,9 +121,10 @@ public class WhatsappInterfaceController implements Initializable {
 
         return layout;  
     }
-
+    
+    // Gera o ScrollList de conversas.
     private StackPane genConversScrolllist(Conversa conv) {
-        Usuario usr = conv.getUser(1);
+        Usuario usr = conv.getUser(1); // Pega o usuario contato
         
         GridPane gppConv = new GridPane();
         gppConv.getStyleClass().add("conversa");
@@ -191,6 +194,7 @@ public class WhatsappInterfaceController implements Initializable {
         contactScrollPane.setContent(content);
     }
     
+    // Renderizador de estrutura da conversa
     private VBox renderConvStructure(Conversa conv) {
         /* Arraylist com todas as mensagens */
         ArrayList<Mensagem> msgs = conv.getListaMensagens();
@@ -240,7 +244,8 @@ public class WhatsappInterfaceController implements Initializable {
         
         return dataText;
     }
-
+    
+    // Ordenacao de conversas pela ultima mensagem enviada.
     private void bubbleSortForSortConvers() {
         
         int size = conversas.size();
@@ -263,6 +268,7 @@ public class WhatsappInterfaceController implements Initializable {
         this.loadConversas(this.conversas);
     }
     
+    // Ordenacao de contatos pelo nome
     private void bubbleSortForSortContact() {
         int size = contatos.getArrayListUsers().size();
         ArrayList<Usuario> outList = contatos.getArrayListUsers();
@@ -286,12 +292,12 @@ public class WhatsappInterfaceController implements Initializable {
     }
     
     private void loadConversas(ArrayList<Conversa> conv) {
-        VBox content = new VBox();
+        VBox box = new VBox();
 
         for (int i = 0; i < conv.size(); i++)
-            content.getChildren().add(this.genConversScrolllist(conv.get(i)));
+            box.getChildren().add(this.genConversScrolllist(conv.get(i)));
 
-        contactScrollPane.setContent(content);
+        contactScrollPane.setContent(box);
     }
     
     // INICIO DO CODIGO DE INJECT DO FXML
@@ -570,10 +576,6 @@ public class WhatsappInterfaceController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        // Inicializa o Usuario
-        this.selfUser = new Usuario("Golinux", "**nao de um push pf**");
-                
         // Action da Troca de Usuario
         userSwitch.setOnAction(this::handlerUserSwitch);
 
@@ -588,8 +590,8 @@ public class WhatsappInterfaceController implements Initializable {
 
         //  Definições de Inicio
 
-        /* Preenchimento de foto default para o topo*/
-        topoImage.setFill(new ImagePattern(defaultFoto, 0, 0, 1, 1, true));
+        /* Preenchimento de foto default para o topo */
+        //topoImage.setFill(new ImagePattern(defaultFoto, 0, 0, 1, 1, true));
     }
     
     public void setContacts(Contatos cont) {

@@ -135,12 +135,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="labelStatus" text="imagina uma descrição muito legal aqui" textFill="#a7a7a7" GridPane.rowIndex="1">
+                        <Label fx:id="labelStatus" textFill="#a7a7a7" GridPane.rowIndex="1">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="topoNome" prefHeight="25.0" prefWidth="347.0" text="Thiago Almeida">
+                        <Label fx:id="topoNome" prefHeight="25.0" prefWidth="347.0">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -149,7 +149,7 @@
                   </GridPane>
                   <Pane fx:id="tt" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Circle fx:id="topoImage" fill="WHITE" layoutX="41.0" layoutY="29.0" radius="27.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Circle fx:id="topoImage" fill="#ffffff00" layoutX="41.0" layoutY="29.0" radius="27.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                      </children></Pane>
                </children>
             </GridPane>
