@@ -1,4 +1,4 @@
-CREATE TABLE Usuario (
+CREATE TABLE usuario (
 	id integer PRIMARY KEY AUTOINCREMENT,
 	nome varchar,
 	status text,
@@ -7,7 +7,7 @@ CREATE TABLE Usuario (
 	lasttime datetime
 );
 
-CREATE TABLE Conversas (
+CREATE TABLE conversas (
 	id integer PRIMARY KEY AUTOINCREMENT,
 	usuario integer PRIMARY KEY AUTOINCREMENT
 );
