@@ -33,7 +33,30 @@
           <RowConstraints maxHeight="438.0" minHeight="10.0" prefHeight="430.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="59.0" prefWidth="175.0" styleClass="user" />
+            <Pane prefHeight="59.0" prefWidth="175.0" styleClass="user">
+               <children>
+                  <GridPane layoutX="22.0" prefHeight="37.0" prefWidth="192.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="mySelfName" prefHeight="14.0" prefWidth="155.0" text="Meu nome" textFill="#a7a7a7">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="mySelfStatus" text="Meu Status" textFill="#a7a7a7" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </children></Pane>
             <ScrollPane fx:id="contactScroll" hbarPolicy="NEVER" prefHeight="305.0" prefWidth="103.0" styleClass="chats" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <content>
                   <VBox fx:id="content" alignment="BOTTOM_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="426.0" prefWidth="213.0">

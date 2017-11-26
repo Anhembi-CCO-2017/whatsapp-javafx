@@ -69,6 +69,10 @@ public class WhatsappInterfaceController implements Initializable {
     private TextField searchField;
     @FXML
     private HBox searchHBox;
+    @FXML
+    private Label mySelfStatus;
+    @FXML
+    private Label mySelfName;
 
     private Contatos contatos = new Contatos(); // Contatos cadastrados
     private ArrayList<Conversa> conversas = new ArrayList<>(); // Conversas existentes
@@ -616,5 +620,11 @@ public class WhatsappInterfaceController implements Initializable {
     
     public void setMySelf(Usuario user) {
         this.selfUser = user;
+        
+        // Dados do usuario
+        mySelfStatus.setText("");
+        mySelfName.setText("");
+        //mySelfStatus.setText(user.getStatus());
+        //mySelfName.setText(user.getNome());
     }
 }

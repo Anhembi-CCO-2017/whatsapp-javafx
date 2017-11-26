@@ -15,14 +15,14 @@ public class Mensagem {
         this.emissor = emissor;
         this.texto = texto;
         this.dataHora = dataHora;
-        setStatus(0);
+        this.setStatus(0);
     }
 
     public Mensagem(Usuario emissor, String texto, Calendar dataHora, int status) {
         this.emissor = emissor;
         this.texto = texto;
         this.dataHora = dataHora;
-        setStatus(status);
+        this.setStatus(status);
     }
 
     public void setStatus(int i){
