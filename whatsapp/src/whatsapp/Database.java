@@ -57,6 +57,8 @@ public class Database {
         
         this.saveUsers();
         this.saveConv();
+        
+        System.out.println("Database gravada com sucesso.");
     }
     
     // Salva usuarios
