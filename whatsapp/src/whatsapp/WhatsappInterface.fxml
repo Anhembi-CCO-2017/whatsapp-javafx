@@ -44,16 +44,12 @@
                       <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="mySelfName" prefHeight="14.0" prefWidth="155.0" text="Meu nome" textFill="#a7a7a7">
+                        <Label fx:id="mySelfName" prefHeight="20.0" prefWidth="188.0" text="Meu nome">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="mySelfStatus" text="Meu Status" textFill="#a7a7a7" GridPane.rowIndex="1">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
+                        <Label fx:id="mySelfStatus" styleClass="self-status" text="Meu Status" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children></Pane>

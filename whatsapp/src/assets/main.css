@@ -96,6 +96,10 @@
 	-fx-alignment: right;
 }
 
+.mensagem-status{
+	-fx-alignment: left;
+}
+
 .mensagem-left{
     -fx-background-color: 
         transparent, 
@@ -103,6 +107,11 @@
         transparent,
         #ffffff;
 
+}
+
+.selft-name{
+	-fx-padding: 0 0 0 10;
+	-fx-font-weight: bold;
 }
 
 .mensagem-text{

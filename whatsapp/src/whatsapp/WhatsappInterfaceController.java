@@ -222,6 +222,7 @@ public class WhatsappInterfaceController implements Initializable {
             
             textMsg.wrappingWidthProperty();
             textStatus.getStyleClass().add("mensagem-hora");
+            textStats.getStyleClass().add("mensagem-status");
             gppText.add(textMsg, 0, 0);
             gppText.add(textStatus, 0, 1);
             gppText.add(textStats, 1, 1);
@@ -617,9 +618,9 @@ public class WhatsappInterfaceController implements Initializable {
         this.selfUser = user;
         
         // Dados do usuario
-        mySelfStatus.setText("");
-        mySelfName.setText("");
-        //mySelfStatus.setText(user.getStatus());
-        //mySelfName.setText(user.getNome());
+//        mySelfStatus.setText("");
+//        mySelfName.setText("");
+        mySelfStatus.setText(user.getStatus());
+        mySelfName.setText(user.getNome());
     }
 }

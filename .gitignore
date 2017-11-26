@@ -2,3 +2,4 @@
 /whatsapp/build/
 /whatsapp/dist/
 *.db
+whatsapp/src/whatsapp/Contatos.java
