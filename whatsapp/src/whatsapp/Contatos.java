@@ -1,11 +1,10 @@
-
 package whatsapp;
 
 import java.util.ArrayList;
 
 public class Contatos {
     
-    private static ArrayList<Usuario>listaUsuarios = new ArrayList<>();
+    private ArrayList<Usuario>listaUsuarios = new ArrayList<>();
 
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
@@ -16,7 +15,7 @@ public class Contatos {
     }
 
     public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
-        Contatos.listaUsuarios = listaUsuarios;
+        this.listaUsuarios = listaUsuarios;
     }
     
     public void adicionarUsuario(Usuario usuario) {
