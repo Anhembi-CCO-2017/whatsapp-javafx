@@ -11,7 +11,7 @@ public class Conversa {
     // primeiro usuario SEMPRE definido como "VOCE"
     private ArrayList<Usuario> user = new ArrayList<>();
     private ArrayList<Mensagem>listaMensagens = new ArrayList<>();
-
+    
     public Conversa(Usuario user1, Usuario user2) {
         user.add(user1);
         user.add(user2);

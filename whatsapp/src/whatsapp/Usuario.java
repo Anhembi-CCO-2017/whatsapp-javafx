@@ -25,13 +25,6 @@ public class Usuario {
         this.status = status;
     }
     
-    public Usuario(String nome, String status, String image) {
-        this.nome = nome;
-        this.status = status;
-        this.imgURL = image;
-        this.image = new Image(getClass().getResourceAsStream(image));
-    }
-    
     public Usuario(String nome, String status, String telefone, String image) {
         this.nome = nome;   
         this.status = status;
@@ -94,11 +87,5 @@ public class Usuario {
     public Date getDateObject(){
     
         return this.ultimavezonline;
-    }
-    
-    @Override
-    public String toString(){
-    
-        return "Nome: "+nome+" - Status: "+status+" - Ultima vez Online: "+ultimavezonline;
     }
 }

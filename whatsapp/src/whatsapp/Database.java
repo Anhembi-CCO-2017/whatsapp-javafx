@@ -34,7 +34,7 @@ public class Database {
         
         try {
             conn = DriverManager.getConnection(url);
-            System.out.println("Sucessfull connection on DB");
+            System.out.println("Conectado com sucesso ao Database");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
