@@ -33,6 +33,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+
+/**
+ *
+ * @author Lucas Golino, Thiago Almeida, Matheus Eli, Gabriel Henrique, Gabriel Forster
+ */
 public class WhatsappInterfaceController implements Initializable {
     
     // Elementos do UI-JavaFX
@@ -78,7 +83,12 @@ public class WhatsappInterfaceController implements Initializable {
     private File fileOpen; // auxiliar data para abrir arquivos.
     private Image defaultFoto = new Image(getClass().getResourceAsStream("placeholder.png")); // Foto padrão
 
-    // Gera ScrollList de contatos
+    /**
+     *  Gera ScrollList de contatos
+     * @param usr   Usuario objeto de usuario
+     * @param event Boolean de qual evento deve usar
+     * @return StackPane  Objeto do javaFX
+     */
     private StackPane genContactScrollList(Usuario usr, boolean event) {
         GridPane gppConv = new GridPane();
         gppConv.getStyleClass().add("conversa");
@@ -120,8 +130,12 @@ public class WhatsappInterfaceController implements Initializable {
 
         return layout;  
     }
-    
-    // Gera o ScrollList de conversas.
+
+    /**
+     *  Gera o ScrollList de conversas.
+     * @param conv   Conversa objeto de Conversa
+     * @return StackPane  Objeto do javaFX
+     */
     private StackPane genConversScrolllist(Conversa conv) {
         Usuario usr = conv.getUser(1); // Pega o usuario contato
         
@@ -169,7 +183,10 @@ public class WhatsappInterfaceController implements Initializable {
         return layout;
     }
     
-    //  Renderiza lista de contatos
+    /**
+     *  Renderiza lista de contatos
+     * @param data   ArrayList<Usuario>
+     */
     private void renderContactsList(ArrayList<Usuario> data) {
         VBox content = new VBox();
 
@@ -193,7 +210,11 @@ public class WhatsappInterfaceController implements Initializable {
         contactScrollPane.setContent(content);
     }
     
-    // Renderizador de estrutura da conversa
+    /**
+     *  Renderizador de estrutura da conversa
+     * @param conv   Conversa objeto
+     * @return VBox Objeto do JavaFX
+     */
     private VBox renderConvStructure(Conversa conv) {
         /* Arraylist com todas as mensagens */
         ArrayList<Mensagem> msgs = conv.getListaMensagens();
@@ -245,7 +266,9 @@ public class WhatsappInterfaceController implements Initializable {
         return dataText;
     }
     
-    // Ordenacao de conversas pela ultima mensagem enviada.
+    /**
+     * Ordenacao de conversas pela ultima mensagem enviada.
+     */
     private void bubbleSortForSortConvers() {
         
         int size = conversas.size();
@@ -268,10 +291,12 @@ public class WhatsappInterfaceController implements Initializable {
         this.loadConversas(this.conversas);
     }
     
-    // Ordenacao de contatos pelo nome
+    /**
+     * Ordenacao de contatos pelo nome
+     */
     private void bubbleSortForSortContact() {
-        int size = contatos.getArrayListUsers().size();
-        ArrayList<Usuario> outList = contatos.getArrayListUsers();
+        int size = contatos.getListaUsuarios().size();
+        ArrayList<Usuario> outList = contatos.getListaUsuarios();
         
         Usuario auxiliar;
 
@@ -291,6 +316,10 @@ public class WhatsappInterfaceController implements Initializable {
         contatos.setListaUsuarios(outList);
     }
     
+    /**
+     *  Carrega conversas
+     * @param conv   ArrayList<Conversa>
+     */
     private void loadConversas(ArrayList<Conversa> conv) {
         VBox box = new VBox();
 
@@ -300,12 +329,19 @@ public class WhatsappInterfaceController implements Initializable {
         contactScrollPane.setContent(box);
     }
     
-    // INICIO DO CODIGO DE INJECT DO FXML
+    /**
+     *  Evento do botão de troca de Usuario
+     * @param event ActionEvent do JavaFX
+     */
     @FXML
     private void handlerUserSwitch(ActionEvent event) {
         this.switchState = !this.switchState;
     }
 
+    /**
+     *  Evento do botão de adicionar contato
+     * @param event ActionEvent do JavaFX
+     */
     @FXML
     private void handleClickAddContact(MouseEvent event) {
         //  Area de Mensagem:
@@ -387,7 +423,7 @@ public class WhatsappInterfaceController implements Initializable {
             this.contatos.adicionarUsuario(newUser);
             //Reordena e Reload Contact List
             bubbleSortForSortContact();
-            this.renderContactsList(this.contatos.getArrayListUsers());
+            this.renderContactsList(this.contatos.getListaUsuarios());
             //Clearbox
             layout.getChildren().clear();
         });
@@ -410,6 +446,10 @@ public class WhatsappInterfaceController implements Initializable {
         return;
     }
     
+    /**
+     *  Evento da caixa de texto de busca
+     * @param event KeyEvent do JavaFX
+     */
     @FXML
     private void handlerButtonSearch(KeyEvent event) {
         String searchString = searchField.getText();
@@ -436,12 +476,12 @@ public class WhatsappInterfaceController implements Initializable {
             ArrayList<Usuario> foundUser = new ArrayList<>();
             
             if(searchString.isEmpty()) {
-                this.renderContactsList(contatos.getArrayListUsers());
+                this.renderContactsList(contatos.getListaUsuarios());
                 return;
             }
             
-            for (int i = 0; i < contatos.getArrayListUsers().size(); i++) {
-                Usuario user = contatos.getArrayListUsers().get(i);
+            for (int i = 0; i < contatos.getListaUsuarios().size(); i++) {
+                Usuario user = contatos.getListaUsuarios().get(i);
 
                 //Adiciona no ArrayList<Conversa> foundConv
                 if(user.getNome().toLowerCase().contains(searchString)) 
@@ -452,6 +492,10 @@ public class WhatsappInterfaceController implements Initializable {
         }
     }
 
+    /**
+     *  Evento do botão de abrir janela de contatos
+     * @param event ActionEvent do JavaFX
+     */
     @FXML
     private void handlerButtonOpenContacts(ActionEvent event) {
         //  Faz com que o botão de adicionar conversa vire de cancelar e voltar.
@@ -464,10 +508,13 @@ public class WhatsappInterfaceController implements Initializable {
         } else scrollActiveAction = !scrollActiveAction;
         
         //  Renderiza Lista de Contatos
-        this.renderContactsList(contatos.getArrayListUsers());
+        this.renderContactsList(contatos.getListaUsuarios());
     }
 
-    // Acão do botão para Enviar msg
+    /**
+     *  Evento do botão de enviar mensagem
+     * @param event ActionEvent do JavaFX
+     */
     @FXML
     private void handleButtonSendMsg(ActionEvent event) {
         if(msgTextArea.getText().equals(""))
@@ -507,6 +554,10 @@ public class WhatsappInterfaceController implements Initializable {
         bubbleSortForSortConvers();
     }
 
+    /**
+     *  Evento de Clicar no contato
+     * @param event ActionEvent do JavaFX
+     */
     @FXML
     private void handleClickContact(MouseEvent event) {
         StackPane DOM = (StackPane) event.getSource();
@@ -532,7 +583,10 @@ public class WhatsappInterfaceController implements Initializable {
         this.handlerButtonOpenContacts(new ActionEvent()); //Inicia o evento para alterar e renderizar o correto.
     }
 
-    //  Acão do botão quando o Conversa é clicada. Insere todas as mensagens da conversa no container de mensagens
+    /**
+     *  Evento de acão do botão quando o Conversa é clicada. Insere todas as mensagens da conversa no container de mensagens
+     * @param event MouseEvent do JavaFX
+     */
     @FXML
     private void handleClickConv(MouseEvent event) {
         /* slecionando o conyainer de conteúdo*/
@@ -574,6 +628,11 @@ public class WhatsappInterfaceController implements Initializable {
      *           .:::::''':.   .:::::'
      */
 
+    /**
+     *  Inicializador do Controllador e do Stage do JavaFx
+     * @param url   URL do arquivo de Interface FXML carregado
+     * @param rb    ResourceBundle do javaFX para manipulação do stagio
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Action da Troca de Usuario
@@ -594,10 +653,18 @@ public class WhatsappInterfaceController implements Initializable {
         //topoImage.setFill(new ImagePattern(defaultFoto, 0, 0, 1, 1, true));
     }
     
+    /**
+     *  Set Objetos de contato
+     * @param cont Contatos objeto
+     */
     public void setContacts(Contatos cont) {
         this.contatos = cont;
     }
     
+    /**
+     *  Set ArrayList de conversas
+     * @param conv  ArrayList<Conversa>
+     */
     public void setConversas(ArrayList<Conversa> conv) {
         this.conversas = conv;
         
@@ -606,20 +673,30 @@ public class WhatsappInterfaceController implements Initializable {
         this.loadConversas(this.conversas);
     }
     
+    /**
+     *  Get Objetos de contato
+     * @return Contatos
+     */
     public Contatos getContacts() {
         return this.contatos;
     }
     
+    /**
+     *  Get Lista de Conversas
+     * @return ArrayList<Conversa>
+     */
     public ArrayList<Conversa> getConversas() {
         return this.conversas;
     }
     
+    /**
+     *  Set MySelf usuario utilizador
+     * @param user  Usuario object
+     */
     public void setMySelf(Usuario user) {
         this.selfUser = user;
         
         // Dados do usuario
-//        mySelfStatus.setText("");
-//        mySelfName.setText("");
         mySelfStatus.setText(user.getStatus());
         mySelfName.setText(user.getNome());
     }
