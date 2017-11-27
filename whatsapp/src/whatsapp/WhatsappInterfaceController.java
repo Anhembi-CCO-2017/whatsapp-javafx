@@ -375,11 +375,10 @@ public class WhatsappInterfaceController implements Initializable {
         });
 
         //  FileChooser
-        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image File *.jpg", "*.jpg");
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image File *.jpg, *.jpeg, *.png", "*.jpg", "*.jpeg", "*.png");
         FileChooser fotoChoose = new FileChooser();
         fotoChoose.getExtensionFilters().add(imageFilter);
         fotoChoose.setTitle("Selecione uma foto");
-        // fotoChoose. (Colocar só .jpg)
         
         // Button & Grid
         HBox buttonGrid = new HBox();

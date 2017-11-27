@@ -22,7 +22,7 @@ public class Conversa {
     
     /**
      *  Get um usuario da conversa pelo index
-     * @param i Index do usuario na lista da conversa
+     * @param index Index do usuario na lista da conversa
      * @return Usuario  objeto do Usuario.
      */
     public Usuario getUser(int index) {
