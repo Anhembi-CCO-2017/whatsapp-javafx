@@ -13,6 +13,10 @@ import java.util.Calendar;
 import java.sql.Date;
 import java.util.GregorianCalendar;
 
+/**
+ *
+ * @author Lucas Golino, Thiago Almeida, Matheus Eli, Gabriel Henrique, Gabriel Forster
+ */
 public class Database {
     private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
@@ -33,7 +37,10 @@ public class Database {
         this.loadConv();
     }
     
-    // Cria conexão com o arquivo.
+    /**
+     *  Cria conexão com arquivo do DataBase
+     * @return Connection   Conexão com arquivo
+     */
     private Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:./database.db";
@@ -49,7 +56,11 @@ public class Database {
         return conn;
     }
     
-    // Realiza operação de Save de dados
+    /**
+     *  Realiza operação de Save de dados
+     * @param cnt   Contatos para salvar
+     * @param cnv   Conversa para salvar
+     */
     public void save(Contatos cnt, ArrayList<Conversa> cnv) {
         Database.truncateTables(this.conn);
         this.contatos = cnt;
@@ -61,9 +72,11 @@ public class Database {
         System.out.println("Database gravada com sucesso.");
     }
     
-    // Salva usuarios
+    /**
+     *  Salva usuarios
+     */
     private void saveUsers() {
-        ArrayList<Usuario> users = this.contatos.getArrayListUsers();
+        ArrayList<Usuario> users = this.contatos.getListaUsuarios();
         for (int i = 0; i < users.size(); i++) {
             Usuario alvo = users.get(i);
             
@@ -71,7 +84,14 @@ public class Database {
         }
     }
     
-    // Query dados do usuario para inserir.
+    /**
+     *  Query dados do usuario para inserir
+     * @param nome  String nome do Usuario
+     * @param status    String status do Usuario
+     * @param telefone  String telefone do Usuario
+     * @param img   String URL da imagem do Usuario
+     * @param lastTime  Long com o timestamp da ultima visualizacao
+     */
     private void queryUser(String nome, String status, String telefone, String img, long lastTime) {
         String sql = "INSERT INTO usuario(nome, status, telefone, img, lasttime) VALUES(?,?,?,?,?)";
  
@@ -88,7 +108,10 @@ public class Database {
         }
     }
     
-    // Salva conversa
+    
+    /**
+     *  Salva Conversas
+     */
     private void saveConv() {
         for (int i = 0; i < this.conversas.size(); i++) {
             Conversa conv = this.conversas.get(i);
@@ -96,14 +119,18 @@ public class Database {
         }
     }
     
-    // Faz o query da consversa, apos criar conversa ele salva as mensagens
+    /**
+     *  Faz o query da consversa, apos criar conversa ele salva as mensagens
+     * @param index  Int index de conversa no ArrayList
+     * @param conv    Conversa objeto de conversa para salvar
+     */
     private void queryConv(int index, Conversa conv) {
         String sql = "INSERT INTO conversas(usuario) VALUES(?)";
  
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            for (int i = 0; i < this.contatos.getArrayListUsers().size(); i++) {
-                if (conv.getUser(1).equals(this.contatos.getArrayListUsers().get(i))) {
+            for (int i = 0; i < this.contatos.getListaUsuarios().size(); i++) {
+                if (conv.getUser(1).equals(this.contatos.getListaUsuarios().get(i))) {
                     pstmt.setInt(1, i);
                     break;
                 }
@@ -125,7 +152,14 @@ public class Database {
         }
     }
     
-    // Query dados da mensagem
+    /**
+     *  Query dados da mensagem
+     * @param convID  Int index de Conversa da mensagem na DB
+     * @param texto String do texto da mensagem
+     * @param status    Int status index da mensagem
+     * @param data  Date object da mensagem
+     * @param emissor   Int do emissor da mensagem
+     */
     private void queryMsg(int convID, String texto, int status, Date data, int emissor) {
         String sql = "INSERT INTO mensagem(texto, status, data, conv, emissor) VALUES(?,?,?,?,?)";
  
@@ -142,7 +176,9 @@ public class Database {
         }
     }
     
-    // Carrega usuarios
+    /**
+     *  Carrega usuarios
+     */
     private void loadUsers() {
         String sql = "SELECT id, nome, status, telefone, img, lasttime FROM usuario ORDER BY id ASC";
         
@@ -155,7 +191,9 @@ public class Database {
         }
     }
     
-    // Carrega conversas
+    /**
+     *  Carrega conversas
+     */
     private void loadConv() {
         String sql = "SELECT id, usuario FROM conversas ORDER BY id ASC"; // Query para carregar conversas
         
@@ -197,11 +235,18 @@ public class Database {
     }
     
     
-    // Getters
+    /**
+     *  Get Contatos Carregados pela DB
+     * @return Contatos  Objeto de Contatos
+     */
     public Contatos getContacts() {
         return this.contatos;
     }
     
+    /**
+     *  Get ArrayList de Conversas carregadas pela DB
+     * @return ArrayList<Conversa>
+     */
     public ArrayList<Conversa> getConversa() {
         return this.conversas;
     }
@@ -209,7 +254,9 @@ public class Database {
     
     /* Static functions para Axulio da classe Database */
     
-    // Verifica se existe arquivo da database, caso não cria.
+    /**
+     * Verifica se existe arquivo da database, caso não cria.
+     */
     public static void createDatabase() {
         String url = "jdbc:sqlite:./database.db";
         File f = new File("database.db");
@@ -228,7 +275,9 @@ public class Database {
         }
     }
     
-    // Truncate tables, limpa todo o banco de dados.
+    /**
+     * Truncate tables, limpa todo o banco de dados.
+     */
     public static void truncateTables(Connection conn) {
         try(Statement stmt = conn.createStatement()) {
             System.out.println("Truncate Databases");
@@ -241,7 +290,9 @@ public class Database {
         }
     }
     
-    // Cria as tabelas defaults quando o banco de dados é criado.
+    /**
+     * Cria as tabelas defaults quando o banco de dados é criado.
+     */
     public static void createDefaultTables(Connection conn) {
         String sql =    "CREATE TABLE usuario (" +
                             "id integer PRIMARY KEY AUTOINCREMENT," +
