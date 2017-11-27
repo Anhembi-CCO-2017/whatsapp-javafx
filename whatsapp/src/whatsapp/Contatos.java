@@ -9,7 +9,9 @@ import java.util.ArrayList;
 public class Contatos {
     
     private ArrayList<Usuario>listaUsuarios = new ArrayList<>();
-
+    
+    public Contatos() {}
+    
     /**
      *  Get a lista de usuarios nos Contatos
      * @return ArrayList<Usuario>   arraylist com todos Usuarios.
