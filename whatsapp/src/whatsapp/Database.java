@@ -17,7 +17,7 @@ public class Database {
     private Contatos contatos = new Contatos();
     private ArrayList<Conversa> conversas = new ArrayList<>();
     private Connection conn;
-    public Usuario mySelf = new Usuario("SadMan", "apresentando o trabalho");
+    public Usuario mySelf = new Usuario("Danilo Cardoso Souza", "Apresentando o trabalho");
     
     public Database() {
         // Verifica se existe se nao cria a database
